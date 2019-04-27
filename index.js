@@ -18,6 +18,8 @@ app.get('/sendAirQuality', async function(req, res) {
 
 app.get('/sendTemperature', async function(req, res) {
     console.log("send Temperature endpoint hit")
+    console.log("The temperature is " + req.query.temp);
+    console.log("The humidity is:- ", req.query.hum);
     var response = await temperatureSensor.storeTemperature();
     if(response == true) {
         console.log("store successfull");
