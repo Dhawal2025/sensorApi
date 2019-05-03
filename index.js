@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express')
 const app = express();
-const PORT=5000
+const path = require('path');
+const PORT=process.env.PORT || 5000;
 var airQualitySensor = require('./sensors/air-quality-sensor.js')
 var temperatureSensor = require('./sensors/temperature-sensor.js')
 var vibrationsSensor = require('./sensors/vibrations-sensor.js')
@@ -40,8 +42,15 @@ app.get('/sendVibrations', async function(req, res) {
     return res.send(response);
 });
 
-app.listen(process.env.PORT || PORT, ()=> {
-    console.log("##########################Listening to port 5000###########################")
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'frontend/build')))
+
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
+})
+app.listen(PORT, ()=> {
+    console.log(`##########################Listening to port ${PORT} ###########################`)
 })
 
 
