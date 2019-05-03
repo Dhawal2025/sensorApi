@@ -1,6 +1,6 @@
 ### For first time build:
 
-`npm i && npm i client-build`
+`npm i && npm run client-build`
 
 ### For running the application:
 
