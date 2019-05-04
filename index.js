@@ -46,11 +46,16 @@ app.get('/sendAirQuality', async function(req, res) {
 });
 
 app.get('/sendTemperature', async function(req, res) {
-    currentTemperature = req.query.temp;
-    currentHumidity = req.query.hum;
+    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    currentTemperature = Number(req.query.temp);
+    currentHumidity = Number(req.query.hum);
     console.log("send Temperature endpoint hit")
     console.log("The temperature is " + req.query.temp);
     console.log("The humidity is:- ", req.query.hum);
+
     var response = await temperatureSensor.storeTemperature(db, currentTemperature, currentHumidity);
     if(response == true) {
         console.log("store successfull");
@@ -87,7 +92,6 @@ app.listen(process.env.PORT || PORT, ()=> {
     MongoClient.connect(uri, { useNewUrlParser: true }, function(err, client) {
         if(err) {
              console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
-
         }    
         assert.equal(null, err);
         console.log("Connected successfully to database server");  
