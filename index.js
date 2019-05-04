@@ -16,7 +16,7 @@ var db
 //var uri = 'mongodb://localhost:27017/sensorDatabase';
 
 //Use this uri when want to connect to the server database(NOTE: It is not recommended to connect to the server database with your personal computer)
-var uri = 'mongodb+srv://akshay:akshay@sih-xyklc.mongodb.net/test?retryWrites=true'
+var uri = process.env.DATABASE_URI
 const dbName = 'sensorApi';
 /********************************************************************/
 
@@ -46,11 +46,16 @@ app.get('/sendAirQuality', async function(req, res) {
 });
 
 app.get('/sendTemperature', async function(req, res) {
-    currentTemperature = req.query.temp;
-    currentHumidity = req.query.hum;
+    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    currentTemperature = Number(req.query.temp);
+    currentHumidity = Number(req.query.hum);
     console.log("send Temperature endpoint hit")
     console.log("The temperature is " + req.query.temp);
     console.log("The humidity is:- ", req.query.hum);
+
     var response = await temperatureSensor.storeTemperature(db, currentTemperature, currentHumidity);
     if(response == true) {
         console.log("store successfull");
