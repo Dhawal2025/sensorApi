@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express();
+const BodyParser = require("body-parser");
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
@@ -11,9 +12,12 @@ var vibrationsSensor = require('./sensors/vibrations-sensor.js')
 /*********************DATABASE VARIABLES*****************************/
 var db
 
+//Use this uri when working locally(Recommended to work locally)
 var uri = 'mongodb://localhost:27017/sensorDatabase';
+
+//Use this uri when want to connect to the server database(NOTE: It is not recommended to connect to the server database with your personal computer)
+//var uri = 'mongodb+srv://akshay:akshay@sih-xyklc.mongodb.net/test?retryWrites=true'
 const dbName = 'sensorApi';
-const client = new MongoClient(uri, { useNewUrlParser: true });
 /********************************************************************/
 
 /*******************TEMPERATURE TEMPORARY VARIABLES******************/
@@ -26,6 +30,9 @@ var currentCO2Level
 var currentO2Level
 /********************************************************************/
 
+
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: true }));
 
 app.get('/sendAirQuality', async function(req, res) {
     console.log("send Air Quality endpoint hit")
@@ -76,7 +83,7 @@ app.get('/sendVibrations', async function(req, res) {
 });
 
 app.listen(process.env.PORT || PORT, ()=> {
-    console.log("##########################Listening to port ${PORT}###########################")
+    console.log("##########################Listening to port " + PORT + " ###########################")
     MongoClient.connect(uri, { useNewUrlParser: true }, function(err, client) {
         if(err) {
              console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
