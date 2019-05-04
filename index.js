@@ -13,10 +13,10 @@ var vibrationsSensor = require('./sensors/vibrations-sensor.js')
 var db
 
 //Use this uri when working locally(Recommended to work locally)
-var uri = 'mongodb://localhost:27017/sensorDatabase';
+//var uri = 'mongodb://localhost:27017/sensorDatabase';
 
 //Use this uri when want to connect to the server database(NOTE: It is not recommended to connect to the server database with your personal computer)
-//var uri = 'mongodb+srv://akshay:akshay@sih-xyklc.mongodb.net/test?retryWrites=true'
+var uri = 'mongodb+srv://akshay:akshay@sih-xyklc.mongodb.net/test?retryWrites=true'
 const dbName = 'sensorApi';
 /********************************************************************/
 
@@ -87,7 +87,6 @@ app.listen(process.env.PORT || PORT, ()=> {
     MongoClient.connect(uri, { useNewUrlParser: true }, function(err, client) {
         if(err) {
              console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
-
         }    
         assert.equal(null, err);
         console.log("Connected successfully to database server");  
