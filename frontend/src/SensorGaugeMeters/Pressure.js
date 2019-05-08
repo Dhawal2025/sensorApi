@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Thermometer from 'react-thermometer-component'
+import ReactSpeedometer from "react-d3-speedometer";
 
-class Temperature extends Component {
+class Pressure extends Component {
 
     constructor(props) {
         super(props);
@@ -10,23 +10,23 @@ class Temperature extends Component {
 
     componentDidMount() {
         const min = 1;
-        const max = 100;
+        const max = 500;
         setInterval(() => this.setState({ tempReading: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
     }
 
     render() {
         return(
-            <Thermometer
-                theme="light"
+            <ReactSpeedometer
+                maxValue={500}
                 value={this.state.tempReading}
-                max="100"
-                steps="3"
-                format="°C"
-                size="large"
-                height="250"
+                needleColor="red"
+                startColor="green"
+                segments={10}
+                endColor="blue"
+                height="180"
             />
         );
     }
 }
 
-export default Temperature;
+export default Pressure;
