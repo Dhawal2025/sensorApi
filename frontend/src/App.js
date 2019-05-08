@@ -5,6 +5,7 @@ import Temperature from './SensorGaugeMeters/Temperature';
 import SplitPane from 'react-split-pane';
 import './css/SplitWindowBorder.css';
 import Pressure from './SensorGaugeMeters/Pressure';
+import Vibrations from './SensorGaugeMeters/Vibrations';
 
 class App extends Component {
   render() {
@@ -43,8 +44,8 @@ class App extends Component {
               Temperature Sensor
             </div>
           </div>
-          <div>
-            4
+          <div style={styles.center}>
+            <Vibrations />
           </div>
           </SplitPane>
         </div>
