@@ -24,13 +24,13 @@ const dbName = 'sensorApi';
 /********************************************************************/
 
 /*******************TEMPERATURE TEMPORARY VARIABLES******************/
-var currentTemperature
-var currentHumidity
+var currentTemperature = 0
+var currentHumidity = 0
 /********************************************************************/
 
 /*******************AIR QUALITY TEMPORARY VARIABLES******************/
-var currentCO2Level
-var currentO2Level
+var currentCO2Level = 0
+var currentO2Level = 0
 /********************************************************************/
 
 
@@ -78,6 +78,17 @@ app.get('/getTemperature', async function(req, res) {
     }
     return res.send(response);
 });
+
+app.get('/getCurrentTemperature', async function(req, res) {
+    var currentData = {
+        currentTemperature: currentTemperature,
+        currentHumidity: currentHumidity
+    };
+
+    var response = currentData;
+    return res.send(response);
+});
+
 
 app.get('/sendVibrations', async function(req, res) {
     console.log("send Vibrations endpoint hit")
