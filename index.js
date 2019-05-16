@@ -11,6 +11,7 @@ const assert = require('assert');
 var airQualitySensor = require('./sensors/air-quality-sensor.js')
 var temperatureSensor = require('./sensors/temperature-sensor.js')
 var vibrationsSensor = require('./sensors/vibrations-sensor.js')
+var soundSensor = require('./sensors/sound-sensor.js')
 
 /*********************DATABASE VARIABLES*****************************/
 var db
@@ -60,6 +61,24 @@ app.get('/sendTemperature', async function(req, res) {
     console.log("The humidity is:- ", req.query.hum);
 
     var response = await temperatureSensor.storeTemperature(db, currentTemperature, currentHumidity);
+    if(response == true) {
+        console.log("store successfull");
+    } else {
+        console.log("unsuccessful");
+    }
+    return res.send(response);
+});
+
+app.get('/sendSound', async function(req, res) {
+    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    adc = Number(req.query.adcSound);
+    console.log("send Sound endpoint hit")
+    console.log("The sound is " + req.query.adcSound);
+
+    var response = await soundSensor.storeSound(db, adc);
     if(response == true) {
         console.log("store successfull");
     } else {
