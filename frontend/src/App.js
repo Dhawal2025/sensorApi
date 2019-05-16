@@ -1,19 +1,56 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Temperature from './SensorGaugeMeters/Temperature';
+import SplitPane from 'react-split-pane';
+import './css/SplitWindowBorder.css';
+import Pressure from './SensorGaugeMeters/Pressure';
+import Vibrations from './SensorGaugeMeters/Vibrations';
 
 class App extends Component {
   render() {
+    const styles = {
+      center: {
+        width: "100%",
+        height: "100%", 
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        alignItems : "center"
+      }
+    };
+
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <SplitPane split="vertical" defaultSize="50%">
+        <div>
+          <SplitPane split="horizontal" defaultSize="50%" >
+          <div>
+            1
+          </div>
+          <div style={styles.center}>
+            <Pressure />
+            <br />
+            <div style={{paddingTop: "5%"}}>
+              Pressure Sensor
+            </div>
+          </div>
+          </SplitPane>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/Appsss.js</code> and save to reload.
-        </p>
-      </div>
+        <div>
+          <SplitPane split="horizontal" defaultSize="50%">
+          <div style={styles.center}>
+            <Temperature />
+            <br />
+            <div style={{paddingTop: "5%"}}>
+              Temperature Sensor
+            </div>
+          </div>
+          <div style={styles.center}>
+            <Vibrations />
+          </div>
+          </SplitPane>
+        </div>
+      </SplitPane>
     );
   }
 }
