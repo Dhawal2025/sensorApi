@@ -19,10 +19,10 @@ class Pressure extends Component {
             <ReactSpeedometer
                 maxValue={500}
                 value={this.state.tempReading}
-                needleColor="red"
-                startColor="green"
+                needleColor="#aac4cf"
+                startColor="#7b88ff"
+                endColor="#49beb7"
                 segments={10}
-                endColor="blue"
                 height="180"
             />
         );

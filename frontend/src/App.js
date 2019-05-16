@@ -13,10 +13,10 @@ class App extends Component {
     const styles = {
       center: {
         width: "100%",
-        height: "100%", 
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         alignItems : "center"
       }
     };
@@ -31,7 +31,7 @@ class App extends Component {
           <div style={styles.center}>
             <Pressure />
             <br />
-            <div style={{paddingTop: "5%"}}>
+            <div style={{paddingTop: "5%", color: 'white'}}>
               Pressure Sensor
             </div>
           </div>

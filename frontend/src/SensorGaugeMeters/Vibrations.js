@@ -6,18 +6,20 @@ class Vibrations extends Component {
     
     constructor(props) {
         super(props);
-        this.state = { car: 0 };
+        this.state = { y: 0, x: 0, z: 0 };
     }
 
     componentDidMount() {
-        const min = 1;
-        const max = 10;
-        setInterval(() => this.setState({ car: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
+        const min = 4;
+        const max = 6;
+        setInterval(() => this.setState({ x: Math.floor(Math.random()*(max-min+1)+min), y: Math.floor(Math.random()*(max-min+1)+min), z: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
     }
     render() {
         var data = {
             date: new Date(),
-            Car: this.state.car,
+            y_axis: this.state.y,
+            x_axis: this.state.x,
+            z_axis: this.state.z
           };
         var chart = {
             size: {
@@ -26,12 +28,19 @@ class Vibrations extends Component {
             margin: {
                 top: 50,
                 right: 50
-            }
+            },
+            axis: {
+                y: { min: 1, max: 10 }
+            },
+            point: {
+                show: false
+            },
         };
         return (
             <RTChart
             chart = {chart}
-            fields={['Car']}
+            fields={['x_axis', 'y_axis', 'z_axis']}
+            maxValues={10}
             data={data} />
         );
     }
