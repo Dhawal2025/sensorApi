@@ -6,6 +6,7 @@ import SplitPane from 'react-split-pane';
 import './css/SplitWindowBorder.css';
 import Pressure from './SensorGaugeMeters/Pressure';
 import Vibrations from './SensorGaugeMeters/Vibrations';
+import Humidity from './SensorGaugeMeters/Humidity';
 
 class App extends Component {
   render() {
@@ -24,8 +25,8 @@ class App extends Component {
       <SplitPane split="vertical" defaultSize="50%">
         <div>
           <SplitPane split="horizontal" defaultSize="50%">
-          <div>
-            1
+          <div style={styles.center}>
+            <Humidity />
           </div>
           <div style={styles.center}>
             <Pressure />
