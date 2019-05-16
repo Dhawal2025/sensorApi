@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Thermometer from 'react-thermometer-component'
+import Thermometer from 'react-thermometer-component';
+import axios from 'axios';
 
 class Temperature extends Component {
 
@@ -8,10 +9,8 @@ class Temperature extends Component {
         this.state = { tempReading: 0 };
     }
 
-    componentDidMount() {
-        const min = 1;
-        const max = 100;
-        setInterval(() => this.setState({ tempReading: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
+     componentDidMount() {
+        setInterval(() => axios.get('/getCurrentTemperature').then(res => this.setState({tempReading: res.data.currentTemperature})) , 2000)
     }
 
     render() {
