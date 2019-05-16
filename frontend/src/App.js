@@ -22,7 +22,7 @@ class App extends Component {
     };
 
     return (
-      <SplitPane split="vertical" defaultSize="50%">
+      <SplitPane split="vertical" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
           <SplitPane split="horizontal" defaultSize="50%">
           <div style={styles.center}>
