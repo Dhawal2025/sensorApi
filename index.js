@@ -159,10 +159,10 @@ app.get('/getTemperature', async function(req, res) {
 
 app.get('/getCurrentTemperature', async function(req, res) {
     var currentData = {
+        critical: (currentTemperature > temperatureThreshold),
         currentTemperature: currentTemperature,
         currentHumidity: currentHumidity
     };
-
     var response = currentData;
     return res.send(response);
 });
