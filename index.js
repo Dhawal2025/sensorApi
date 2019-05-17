@@ -11,6 +11,8 @@ const assert = require('assert');
 var airQualitySensor = require('./sensors/air-quality-sensor.js')
 var temperatureSensor = require('./sensors/temperature-sensor.js')
 var vibrationsSensor = require('./sensors/vibrations-sensor.js')
+var soundSensor = require('./sensors/sound-sensor.js')
+var pressureSensor = require('./sensors/pressure-sensor.js')
 
 /*********************DATABASE VARIABLES*****************************/
 var db
@@ -26,11 +28,22 @@ const dbName = 'sensorApi';
 /*******************TEMPERATURE TEMPORARY VARIABLES******************/
 var currentTemperature = 0
 var currentHumidity = 0
+var temperatureThreshold = 50
 /********************************************************************/
 
 /*******************AIR QUALITY TEMPORARY VARIABLES******************/
 var currentCO2Level = 0
 var currentO2Level = 0
+/********************************************************************/
+
+/*******************PRESSURE TEMPORARY VARIABLES******************/
+var currentPressure = 0
+var pressureThreshold = 100
+/********************************************************************/
+
+/*******************PRESSURE TEMPORARY VARIABLES******************/
+var currentFurnaceTemperature = 0
+var furnaceTemperatureThreshold = 100
 /********************************************************************/
 
 
@@ -68,6 +81,71 @@ app.get('/sendTemperature', async function(req, res) {
     return res.send(response);
 });
 
+app.get('/sendSound', async function(req, res) {
+    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    adc = Number(req.query.adcSound);
+    console.log("send Sound endpoint hit")
+    console.log("The sound is " + req.query.adcSound);
+
+    var response = await soundSensor.storeSound(db, adc);
+    if(response == true) {
+        console.log("store successfull");
+    } else {
+        console.log("unsuccessful");
+    }
+    return res.send(response);
+});
+
+app.get('/sendVibrations', async function(req, res) {
+    console.log("send Vibrations endpoint hit")
+    var response = await vibrationsSensor.storeVibration();
+    if(response == true) {
+        console.log("store successfull");
+    } else {
+        console.log("unsuccessful");
+    }
+    return res.send(response);
+});
+
+app.get('/sendPressure', async function(req, res) {
+    if(isNaN(Number(req.query.pressure))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    currentPressure = Number(req.query.pressure);
+    console.log("send Pressure endpoint hit")
+    console.log("The pressure is " + req.query.pressure);
+
+    var response = await pressureSensor.storePressure(db, currentPressure);
+    if(response == true) {
+        console.log("store successfull");
+    } else {
+        console.log("unsuccessful");
+    }
+    return res.send(response);
+});
+
+app.get('/sendFurnaceTemperature', async function(req, res) {
+    if(isNaN(Number(req.query.furnaceTemp))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    currentFurnaceTemperature = Number(req.query.furnaceTemp);
+    console.log("send Pressure endpoint hit")
+    console.log("The pressure is " + req.query.furnaceTemp);
+
+    var response = await furnaceSensor.storeTemperature(db, currentFurnaceTemperature);
+    if(response == true) {
+        console.log("store successfull");
+    } else {
+        console.log("unsuccessful");
+    }
+    return res.send(response);
+});
+
 app.get('/getTemperature', async function(req, res) {
     var response = await temperatureSensor.findTemperature(db);
     if(response == null) {
@@ -89,15 +167,23 @@ app.get('/getCurrentTemperature', async function(req, res) {
     return res.send(response);
 });
 
+app.get('/getCurrentPressure', async function(req, res) {
+    var currentData = {
+        critical: (currentPressure > pressureThreshold),
+        currentPressure: currentPressure,
+    };
 
-app.get('/sendVibrations', async function(req, res) {
-    console.log("send Vibrations endpoint hit")
-    var response = await vibrationsSensor.storeVibration();
-    if(response == true) {
-        console.log("store successfull");
-    } else {
-        console.log("unsuccessful");
-    }
+    var response = currentData;
+    return res.send(response);
+});
+
+app.get('/getCurrentFurnaceTemperature', async function(req, res) {
+    var currentData = {
+        critical: (currentFurnaceTemperature > furnaceTemperatureThreshold),
+        currentPressure: currentFurnaceTemperature,
+    };
+
+    var response = currentData;
     return res.send(response);
 });
 
