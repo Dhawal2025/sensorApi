@@ -13,16 +13,16 @@ class App extends Component {
     const styles = {
       center: {
         width: "100%",
-        height: "100%", 
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         alignItems : "center"
       }
     };
 
     return (
-      <SplitPane split="vertical" defaultSize="50%">
+      <SplitPane split="vertical" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
           <SplitPane split="horizontal" defaultSize="50%">
           <div style={styles.center}>
@@ -31,7 +31,7 @@ class App extends Component {
           <div style={styles.center}>
             <Pressure />
             <br />
-            <div style={{paddingTop: "5%"}}>
+            <div style={{paddingTop: "5%", color: 'white'}}>
               Pressure Sensor
             </div>
           </div>
