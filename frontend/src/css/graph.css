@@ -1,12 +1,12 @@
 /*-- Chart --*/
 .c3 svg {
     font: 10px sans-serif;
-    -webkit-tap-highlight-color: #49beb7;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
   
   .c3 path, .c3 line {
     fill: none;
-    stroke: #49beb7;
+    stroke: #000;
   }
   
   .c3 text {
@@ -24,27 +24,27 @@
   }
   
   .c3-chart-arc path {
-    stroke: #49beb7;
+    stroke: #fff;
   }
   
   .c3-chart-arc rect {
-    stroke: #49beb7;
+    stroke: white;
     stroke-width: 1;
   }
   
   .c3-chart-arc text {
-    fill: #49beb7;
+    fill: #fff;
     font-size: 13px;
   }
   
   /*-- Axis --*/
   /*-- Grid --*/
   .c3-grid line {
-    stroke: #49beb7;
+    stroke: #aaa;
   }
   
   .c3-grid text {
-    fill: #49beb7;
+    fill: #aaa;
   }
   
   .c3-xgrid, .c3-ygrid {
@@ -53,7 +53,7 @@
   
   /*-- Text on Chart --*/
   .c3-text.c3-empty {
-    fill: #49beb7;
+    fill: #808080;
     font-size: 2em;
   }
   
@@ -120,7 +120,7 @@
   .c3-legend-background {
     opacity: 0.75;
     fill: white;
-    stroke:#49beb7;
+    stroke: lightgray;
     stroke-width: 1;
   }
   
@@ -193,7 +193,7 @@
   }
   
   .c3-chart-arcs .c3-chart-arcs-gauge-unit {
-    fill: #FFF;
+    fill: #000;
     font-size: 16px;
   }
   
@@ -206,7 +206,7 @@
   }
   
   .c3-chart-arc .c3-gauge-value {
-    fill: #FFF;
+    fill: #000;
     /*  font-size: 28px !important;*/
   }
   
