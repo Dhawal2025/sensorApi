@@ -6,5 +6,5 @@ do
   echo "Welcome $x times"
   x=$(( $x + 1 ))
   sleep 2
-  curl http://sensorapiturings.herokuapp.com/sendTemperature?temp="$x"\&hum="$x"
+  curl http://localhost:8000/sendPressure?pressure="$x"
 done

@@ -1,26 +1,24 @@
 import { color } from 'd3-color';
 import { interpolateRgb } from 'd3-interpolate';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import axios from 'axios';
 import LiquidFillGauge from 'react-liquid-gauge';
 
 class Humidity extends Component {
     state = {
-        value: 50
+        humidityReading: 50
     };
-    startColor = '#4592af'; // cornflowerblue
-    endColor = '#4c8492'; // crimson
+    startColor = '#4592af'; 
+    endColor = '#4c8492'; 
     
     componentDidMount() {
-        const min = 1;
-        const max = 100;
-        setInterval(() => this.setState({ value: Math.floor(Math.random()*(max-min+1)+min) }), 3000)
+        setInterval(() => axios.get('/getCurrentTemperature').then(res => this.setState({humidityReading: res.data.currentHumidity})) , 2000)
     }
 
     render() {
         const radius = 120;
         const interpolate = interpolateRgb(this.startColor, this.endColor);
-        const fillColor = interpolate(this.state.value / 100);
+        const fillColor = interpolate(this.state.humidityReading / 100);
         const gradientStops = [
             {
                 key: '0%',
@@ -48,7 +46,7 @@ class Humidity extends Component {
                     style={{ margin: '0 auto' }}
                     width={radius * 2}
                     height={radius * 2}
-                    value={this.state.value}
+                    value={this.state.humidityReading}
                     percent="%"
                     textSize={1}
                     textOffsetX={0}
@@ -90,9 +88,6 @@ class Humidity extends Component {
                     waveTextStyle={{
                         fill: color('#fff').toString(),
                         fontFamily: 'Arial'
-                    }}
-                    onClick={() => {
-                        this.setState({ value: Math.random() * 100 });
                     }}
                 />
                 <div
