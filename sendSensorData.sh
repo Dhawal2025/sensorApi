@@ -7,6 +7,6 @@ do
   x=$(( $x + 1 ))
   sleep 2
 
-  curl http://sensorapiturings.herokuapp.com/sendTemperature?temp=60\&hum="$x"
+  curl http://sensorapiturings.herokuapp.com/sendTemperature?temp="$x"\&hum="$x"
   curl http://sensorapiturings.herokuapp.com/sendPressure?pressure="$x"
 done

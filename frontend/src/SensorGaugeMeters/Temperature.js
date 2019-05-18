@@ -22,7 +22,7 @@ const customStyles = {
         width: '25%',
         height: '25%'
     }
-  };
+};
 
 class Temperature extends Component {
 
@@ -30,33 +30,33 @@ class Temperature extends Component {
         super(props);
         this.state = { 
             tempReading: 0,
-            modalIsOpen: false
+            tempModalIsOpen: false,
+            tempNoted: false
         };
-        this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
-    openModal() {
-        this.setState({modalIsOpen: true});
+        this.tempCloseModal = this.tempCloseModal.bind(this);
     }
     
     afterOpenModal() {
         this.subtitle.style.color = '#000';
     }
     
-    closeModal() {
-        this.setState({modalIsOpen: false});
+    tempCloseModal() {
+        console.log("Temperature Close!!")
+        this.setState({tempModalIsOpen: false, tempNoted: true});
     }
 
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
             this.setState({tempReading: res.data.currentTemperature})
             if(res.data.critical) {
-                if(!this.state.modalIsOpen) {
-                    this.openModal();
+                if(!this.state.tempModalIsOpen) {
+                    if(!this.state.tempNoted) {
+                        this.setState({ tempModalIsOpen: true});
+                    }
                 }
             } else {
-                this.closeModal();
+                this.setState({ tempModalIsOpen: false, tempNoted: false });
             }
         }) , 2000)
     }
@@ -76,16 +76,16 @@ class Temperature extends Component {
                 />
                 <div>
                     <Modal
-                    isOpen={this.state.modalIsOpen}
+                    isOpen={this.state.tempModalIsOpen}
                     onAfterOpen={this.afterOpenModal}
-                    onRequestClose={this.closeModal}
+                    onRequestClose={this.tempCloseModal}
                     style={customStyles}
-                    contentLabel="Example Modal"
+                    contentLabel="Temperature Critical"
                     >
                         <h2 ref={subtitle => this.subtitle = subtitle}>Temperature Critical</h2>
                         <hr/>
                         <div>The temperature of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.closeModal} style={{float: 'right'}}>Ok Noted!</Button>
+                        <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Ok Noted!</Button>
                     </Modal>
                 </div>
             </div>
