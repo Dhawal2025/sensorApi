@@ -29,6 +29,9 @@ const dbName = 'sensorApi';
 var currentTemperature = 0
 var currentHumidity = 0
 var currentPpm = 0
+var maxPpm = 0;
+var averagePpm = 0;
+var ppmCalculated = 0;
 var temperatureThreshold = 50
 var humidityThreshold = 50
 var ppmThreshold = 10000
@@ -74,6 +77,11 @@ app.get('/sendTemperature', async function(req, res) {
     currentTemperature = Number(req.query.temp);
     currentHumidity = Number(req.query.hum);
     currentPpm = Number(req.query.ppm)
+    if(maxPpm < currentPpm)
+        maxPpm = currentPpm
+    averagePpm = averagePpm * ppmCalculated + currentPpm;
+    ppmCalculated++;
+    averagePpm = averagePpm / ppmCalculated;
 
     //trigger alarm if critical value reached
     if(currentTemperature > temperatureThreshold || currentHumidity > humidityThreshold || currentPpm > ppmThreshold)
@@ -182,8 +190,12 @@ app.get('/getCurrentTemperature', async function(req, res) {
     var currentData = {
         criticalTemperature: (currentTemperature > temperatureThreshold),
         criticalHumidity: (currentHumidity > humidityThreshold),
+        criticalPpm: (currentPpm > ppmThreshold),
         currentTemperature: currentTemperature,
-        currentHumidity: currentHumidity
+        currentHumidity: currentHumidity,
+        currentPpm: currentPpm,
+        maxPpm: maxPpm,
+        averagePpm: averagePpm
     };
     var response = currentData;
     return res.send(response);

@@ -44,6 +44,7 @@ class Temperature extends Component {
     tempCloseModal() {
         console.log("Temperature Close!!")
         this.setState({tempModalIsOpen: false, tempNoted: true});
+        axios.get('/turnOffAlarm').then(res => console.log(res))
     }
 
     componentDidMount() {
@@ -85,7 +86,7 @@ class Temperature extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Temperature Critical</h2>
                         <hr/>
                         <div>The temperature of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Ok Noted!</Button>
+                        <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
             </div>
