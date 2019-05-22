@@ -1,11 +1,12 @@
 const assert = require('assert');
 
-var storeTemperature = async function(db, temperature, humidity) {
+var storeTemperature = async function(db, temperature, humidity, ppm) {
     const temperatureCollection = db.collection('temperature');
     // Insert some documents
     temperatureCollection.insertOne({
             temperature : temperature,
-            humidity: humidity
+            humidity: humidity,
+            ppm: ppm
         }, function(err, result) {
         assert.equal(err, null);
         console.log("Inserted document into the collection");

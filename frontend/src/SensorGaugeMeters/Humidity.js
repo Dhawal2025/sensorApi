@@ -49,6 +49,7 @@ class Humidity extends Component {
     humCloseModal() {
         console.log("Humidity Close!!")
         this.setState({humModalIsOpen: false, humNoted: true});
+        axios.get('/turnOffAlarm').then(res => console.log(res))
     }
 
     componentDidMount() {
@@ -171,7 +172,7 @@ class Humidity extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Humidity Critical</h2>
                         <hr/>
                         <div>The humidity of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.humCloseModal} style={{float: 'right'}}>Ok Noted!</Button>
+                        <Button variant="contained" color="primary" onClick={this.humCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
             </div>

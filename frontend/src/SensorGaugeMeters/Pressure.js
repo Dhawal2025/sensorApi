@@ -44,6 +44,7 @@ class Pressure extends Component {
     pressureCloseModal() {
         console.log("Pressure Close!!");
         this.setState({pressureModalIsOpen: false, pressureNoted: true});
+        axios.get('/turnOffAlarm').then(res => console.log(res))
     }
 
     componentDidMount() {
@@ -85,7 +86,7 @@ class Pressure extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Pressure Critical</h2>
                         <hr/>
                         <div>The pressure of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.pressureCloseModal} style={{float: 'right'}}>Ok Noted!</Button>
+                        <Button variant="contained" color="primary" onClick={this.pressureCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
             </div>

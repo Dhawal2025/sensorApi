@@ -6,6 +6,23 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 class AirQuality extends Component {
+
+    componentDidMount() {
+        setInterval(() => axios.get('/getCurrentTemperature').then(res => {
+            this.setState({pressureReading: res.data.currentPressure});
+            if(res.data.criticalPressure) {
+                if(!this.state.pressureModalIsOpen) {
+                    if(!this.state.pressureNoted) {
+                        this.setState({ pressureModalIsOpen: true});
+                    }
+                }
+            } else {
+                this.setState({ pressureModalIsOpen: false, pressureNoted: false });
+            }
+        }) , 2000)
+    }
+
+
     render() {
         return (
             <Table style={{width: '25%'}}>
