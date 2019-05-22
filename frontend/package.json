@@ -9,6 +9,7 @@
     "react-d3-speedometer": "^0.5.5",
     "react-dom": "^16.8.6",
     "react-liquid-gauge": "^1.2.4",
+    "react-modal": "^3.8.1",
     "react-radial-gauge": "^0.1.1",
     "react-rt-chart": "^2.0.0",
     "react-scripts": "0.9.5",

@@ -17,7 +17,11 @@ class App extends Component {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems : "center"
+        alignItems : "center",
+      },
+      label: {
+        paddingTop: "5%",
+        color: 'white'
       }
     };
 
@@ -27,11 +31,15 @@ class App extends Component {
           <SplitPane split="horizontal" defaultSize="50%">
           <div style={styles.center}>
             <Humidity />
+            <br />
+            <div style={styles.label}>
+              Humidity Sensor
+            </div>
           </div>
           <div style={styles.center}>
             <Pressure />
             <br />
-            <div style={{paddingTop: "5%", color: 'white'}}>
+            <div style={styles.label}>
               Pressure Sensor
             </div>
           </div>
@@ -42,12 +50,16 @@ class App extends Component {
           <div style={styles.center}>
             <Temperature />
             <br />
-            <div style={{paddingTop: "5%"}}>
+            <div style={styles.label}>
               Temperature Sensor
             </div>
           </div>
           <div style={styles.center}>
             <Vibrations />
+            <br />
+            <div style={styles.label}>
+              Vibrations Sensor
+            </div>
           </div>
           </SplitPane>
         </div>

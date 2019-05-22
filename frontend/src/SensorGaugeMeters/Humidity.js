@@ -6,7 +6,7 @@ import LiquidFillGauge from 'react-liquid-gauge';
 
 class Humidity extends Component {
     state = {
-        humidityReading: 50
+        humidityReading: 0
     };
     startColor = '#4592af'; 
     endColor = '#4c8492'; 
