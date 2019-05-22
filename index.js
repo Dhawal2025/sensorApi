@@ -29,6 +29,7 @@ const dbName = 'sensorApi';
 var currentTemperature = 0
 var currentHumidity = 0
 var temperatureThreshold = 50
+var humidityThreshold = 50
 /********************************************************************/
 
 /*******************AIR QUALITY TEMPORARY VARIABLES******************/
@@ -41,11 +42,15 @@ var currentPressure = 0
 var pressureThreshold = 100
 /********************************************************************/
 
-/*******************PRESSURE TEMPORARY VARIABLES******************/
+/*******************FURNACE TEMPORARY VARIABLES******************/
 var currentFurnaceTemperature = 0
 var furnaceTemperatureThreshold = 100
 /********************************************************************/
 
+
+/*******************ALARM TEMPORARY VARIABLES******************/
+var alarmStatus = false
+/********************************************************************/
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
@@ -158,8 +163,11 @@ app.get('/getTemperature', async function(req, res) {
 });
 
 app.get('/getCurrentTemperature', async function(req, res) {
+    if(currentTemperature > temperatureThreshold || currentHumidity > humidityThreshold)
+        alarmStatus = true;
     var currentData = {
-        critical: (currentTemperature > temperatureThreshold),
+        criticalTemperature: (currentTemperature > temperatureThreshold),
+        criticalHumidity: (currentHumidity > humidityThreshold),
         currentTemperature: currentTemperature,
         currentHumidity: currentHumidity
     };
@@ -168,8 +176,10 @@ app.get('/getCurrentTemperature', async function(req, res) {
 });
 
 app.get('/getCurrentPressure', async function(req, res) {
+    if(currentPressure > pressureThreshold)
+        alarmStatus = true
     var currentData = {
-        critical: (currentPressure > pressureThreshold),
+        criticalPressure: (currentPressure > pressureThreshold),
         currentPressure: currentPressure,
     };
 
@@ -179,7 +189,7 @@ app.get('/getCurrentPressure', async function(req, res) {
 
 app.get('/getCurrentFurnaceTemperature', async function(req, res) {
     var currentData = {
-        critical: (currentFurnaceTemperature > furnaceTemperatureThreshold),
+        criticalFurnaceTemperature: (currentFurnaceTemperature > furnaceTemperatureThreshold),
         currentPressure: currentFurnaceTemperature,
     };
 

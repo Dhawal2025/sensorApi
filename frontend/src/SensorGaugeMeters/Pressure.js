@@ -51,7 +51,7 @@ class Pressure extends Component {
         const max = 500;
         setInterval(() => axios.get('/getCurrentPressure').then(res => {
             this.setState({pressureReading: res.data.currentPressure});
-            if(res.data.critical) {
+            if(res.data.criticalPressure) {
                 if(!this.state.pressureModalIsOpen) {
                     if(!this.state.pressureNoted) {
                         this.setState({ pressureModalIsOpen: true});

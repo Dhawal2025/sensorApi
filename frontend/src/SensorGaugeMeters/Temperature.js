@@ -49,7 +49,7 @@ class Temperature extends Component {
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
             this.setState({tempReading: res.data.currentTemperature})
-            if(res.data.critical) {
+            if(res.data.criticalTemperature) {
                 if(!this.state.tempModalIsOpen) {
                     if(!this.state.tempNoted) {
                         this.setState({ tempModalIsOpen: true});
