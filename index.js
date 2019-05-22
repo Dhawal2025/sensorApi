@@ -43,17 +43,27 @@ var pressureThreshold = 100
 /********************************************************************/
 
 /*******************FURNACE TEMPORARY VARIABLES******************/
-var currentFurnaceTemperature = 0
+var currentFurnaceTemperatureCelcius = 0
+var currentFurnaceTemperatureFahrenhiet = 0
+
 var furnaceTemperatureThreshold = 100
 /********************************************************************/
 
 /*******************SOUND TEMPORARY VARIABLES******************/
-var currentSoundStatus = 0
+var currentSound = 0
+/********************************************************************/
+
+/*******************VIBRATION TEMPORARY VARIABLES******************/
+var currentX = 0;
+var currentY = 0;
+var currentZ = 0;
+
 /********************************************************************/
 
 /*******************ALARM TEMPORARY VARIABLES******************/
 var alarmStatus = false
 /********************************************************************/
+
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
@@ -104,18 +114,26 @@ app.get('/sendTemperature', async function(req, res) {
 });
 
 app.get('/sendSound', async function(req, res) {
-    if(isNaN(Number(req.query.soundStatus))) {
+    if(isNaN(Number(req.query.sound))) {
         console.log("invalid data values sent")
         return res.send(false)
     }
-    currentSoundStatus = Number(req.query.soundStatus);
+    currentSound = Number(req.query.sound);
     console.log("send Sound endpoint hit")
-    console.log("The sound is " + req.query.adcSound);
+    console.log("The sound is " + req.query.sound);
 
     return res.send(true);
 });
 
 app.get('/sendVibrations', async function(req, res) {
+    if(isNaN(Number(req.query.x)) || isNaN(Number(req.query.y)) || isNaN(Number(req.query.z))) {
+        console.log("invalid data values sent")
+        return res.send(false)
+    }
+    currentX = req.query.x
+    currentY = req.query.y
+    currentZ = req.query.z
+    
     console.log("send Vibrations endpoint hit")
     var response = await vibrationsSensor.storeVibration();
     if(response == true) {
@@ -152,11 +170,12 @@ app.get('/sendPressure', async function(req, res) {
 });
 
 app.get('/sendFurnaceTemperature', async function(req, res) {
-    if(isNaN(Number(req.query.furnaceTemp))) {
+    if(isNaN(Number(req.query.furnaceCel)) || isNaN(Number(req.query.furnaceFah))) {
         console.log("invalid data values sent")
         return res.send(false)
     }
-    currentFurnaceTemperature = Number(req.query.furnaceTemp);
+    currentFurnaceTemperatureCelcius = Number(req.query.furnaceCel);
+    currentFurnaceTemperatureFahrenhiet = Number(req.query.furnaceFah);
 
     //trigger alarm if critical value reached
     if(currentFurnaceTemperature > furnaceTemperatureThreshold)
@@ -166,7 +185,7 @@ app.get('/sendFurnaceTemperature', async function(req, res) {
     console.log("send furnace temperature endpoint hit")
     console.log("The furnace temperature is " + req.query.furnaceTemp);
 
-    var response = await furnaceSensor.storeTemperature(db, currentFurnaceTemperature);
+    var response = await furnaceSensor.storeTemperature(db, currentFurnaceTemperatureCelcius);
     if(response == true) {
         console.log("store successfull");
     } else {
@@ -213,8 +232,9 @@ app.get('/getCurrentPressure', async function(req, res) {
 
 app.get('/getCurrentFurnaceTemperature', async function(req, res) {
     var currentData = {
-        criticalFurnaceTemperature: (currentFurnaceTemperature > furnaceTemperatureThreshold),
-        currentPressure: currentFurnaceTemperature,
+        criticalFurnaceTemperature: (currentFurnaceTemperatureCelcius > furnaceTemperatureThreshold),
+        currentFurnaceTemperatureCelcius: currentFurnaceTemperatureCelcius,
+        currentFurnaceTemperatureFahrenhiet: currentFurnaceTemperatureFahrenhiet
     };
 
     var response = currentData;
