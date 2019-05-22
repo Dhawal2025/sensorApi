@@ -7,6 +7,8 @@ import './css/SplitWindowBorder.css';
 import Pressure from './SensorGaugeMeters/Pressure';
 import Vibrations from './SensorGaugeMeters/Vibrations';
 import Humidity from './SensorGaugeMeters/Humidity';
+import AirTemperature from './SensorGaugeMeters/AirTemperature';
+import AirQuality from './SensorGaugeMeters/AirQuality';
 
 class App extends Component {
   render() {
@@ -17,6 +19,13 @@ class App extends Component {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        alignItems : "center",
+      },
+      centerRow: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: 'space-around',
         alignItems : "center",
       },
       label: {
@@ -30,11 +39,17 @@ class App extends Component {
         <div>
           <SplitPane split="horizontal" defaultSize="50%">
           <div style={styles.center}>
+          <div style={styles.centerRow}>
+            <h1 style={{color: 'white'}}>Humidity </h1>
+            <h1 style={{color: 'white'}}>Air Quality </h1>
+            <h1 style={{color: 'white'}}>Air Temp </h1>
+            
+          </div>
+          <div style={styles.centerRow}>
             <Humidity />
-            <br />
-            <div style={styles.label}>
-              Humidity Sensor
-            </div>
+            <AirQuality />
+            <AirTemperature style={{marginBottom: "20%"}} />
+          </div>
           </div>
           <div style={styles.center}>
             <Pressure />

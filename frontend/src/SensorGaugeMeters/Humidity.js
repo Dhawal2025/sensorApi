@@ -90,9 +90,18 @@ class Humidity extends Component {
                 offset: '100%'
             }
         ];
+        const styles = {
+            center: {
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems : "center",
+            }
+          };
 
         return (
             <div>
+                <div style={styles.center}>
                 <LiquidFillGauge
                     style={{ margin: '0 auto' }}
                     width={radius * 2}
@@ -141,6 +150,8 @@ class Humidity extends Component {
                         fontFamily: 'Arial'
                     }}
                 />
+                {/* <p style={{color: 'white'}}> Humidity Sensor </p> */}
+                </div>
                 <div
                     style={{
                         margin: '20px auto',
