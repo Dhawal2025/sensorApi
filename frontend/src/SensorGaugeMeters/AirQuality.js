@@ -4,12 +4,26 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import axios from 'axios';
 
 class AirQuality extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPpm: 0,
+            maxPpm: 0,
+            averagePpm: 0
+        };
+    }
+
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({pressureReading: res.data.currentPressure});
+            this.setState({
+                currentPpm: res.data.currentPpm, 
+                maxPpm: res.data.maxPpm,
+                averagePpm: res.data.averagePpm
+                });
             if(res.data.criticalPressure) {
                 if(!this.state.pressureModalIsOpen) {
                     if(!this.state.pressureNoted) {
@@ -36,10 +50,14 @@ class AirQuality extends Component {
                 <TableBody>
                     <TableRow>
                     <TableCell align="center" style={{color: 'white', fontSize: 20}}>
-                        0
+                        {this.state.currentPpm}
                     </TableCell>
-                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>50</TableCell>
-                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>100</TableCell>
+                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>
+                        {this.state.averagePpm}
+                    </TableCell>
+                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>
+                        {this.state.maxPpm}
+                    </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

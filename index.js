@@ -13,6 +13,7 @@ var temperatureSensor = require('./sensors/temperature-sensor.js')
 var vibrationsSensor = require('./sensors/vibrations-sensor.js')
 var soundSensor = require('./sensors/sound-sensor.js')
 var pressureSensor = require('./sensors/pressure-sensor.js')
+var furnaceSensor = require('./sensors/furnace-sensor');
 
 /*********************DATABASE VARIABLES*****************************/
 var db
@@ -214,7 +215,7 @@ app.get('/getCurrentPressure', async function(req, res) {
 app.get('/getCurrentFurnaceTemperature', async function(req, res) {
     var currentData = {
         criticalFurnaceTemperature: (currentFurnaceTemperature > furnaceTemperatureThreshold),
-        currentPressure: currentFurnaceTemperature,
+        currentFurnaceTemperature: currentFurnaceTemperature,
     };
 
     var response = currentData;

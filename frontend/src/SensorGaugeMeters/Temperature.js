@@ -29,7 +29,7 @@ class Temperature extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            tempReading: 0,
+            currentFurnaceTemperature: 0,
             tempModalIsOpen: false,
             tempNoted: false
         };
@@ -48,8 +48,8 @@ class Temperature extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({tempReading: res.data.currentTemperature})
+        setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
+            this.setState({currentFurnaceTemperature: res.data.currentFurnaceTemperature})
             if(res.data.criticalTemperature) {
                 if(!this.state.tempModalIsOpen) {
                     if(!this.state.tempNoted) {
@@ -67,7 +67,7 @@ class Temperature extends Component {
             <div>
                 <Thermometer
                     theme="dark"
-                    value={this.state.tempReading}
+                    value={this.state.currentFurnaceTemperature}
                     max="100"
                     steps="3"
                     format="°C"
