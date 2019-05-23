@@ -50,7 +50,7 @@ class Temperature extends Component {
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
             this.setState({currentFurnaceTemperature: res.data.currentFurnaceTemperature})
-            if(res.data.criticalTemperature) {
+            if(res.data.criticalFurnaceTemperature) {
                 if(!this.state.tempModalIsOpen) {
                     if(!this.state.tempNoted) {
                         this.setState({ tempModalIsOpen: true});
@@ -75,6 +75,7 @@ class Temperature extends Component {
                     height="250"
                     reverseGradient={true}
                 />
+                <h2>State:- {this.state.tempModalIsOpen}</h2>
                 <div>
                     <Modal
                     isOpen={this.state.tempModalIsOpen}
@@ -83,9 +84,9 @@ class Temperature extends Component {
                     style={customStyles}
                     contentLabel="Temperature Critical"
                     >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>Temperature Critical</h2>
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Furnace Temperature Critical</h2>
                         <hr/>
-                        <div>The temperature of the region has reached beyond critical limit.</div>
+                        <div>The temperature of the Furnace has reached beyond critical limit.</div>
                         <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
