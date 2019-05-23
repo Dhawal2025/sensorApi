@@ -16,7 +16,9 @@
     "react-split-pane": "^0.1.87",
     "react-thermometer-component": "^1.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "react-canvas-gauge": "^1.0.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
