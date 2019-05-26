@@ -9,6 +9,7 @@ import Vibrations from './SensorGaugeMeters/Vibrations';
 import Humidity from './SensorGaugeMeters/Humidity';
 import AirTemperature from './SensorGaugeMeters/AirTemperature';
 import AirQuality from './SensorGaugeMeters/AirQuality';
+import Sound from './SensorGaugeMeters/Sound';
 
 class App extends Component {
   render() {
@@ -35,9 +36,9 @@ class App extends Component {
     };
 
     return (
-      <SplitPane split="vertical" defaultSize="50%" paneStyle={{background: "#282a36"}}>
+      <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
-          <SplitPane split="horizontal" defaultSize="50%">
+          <SplitPane split="vertical" defaultSize="50%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
             <h1 style={{color: 'white'}}>Humidity </h1>
@@ -52,23 +53,33 @@ class App extends Component {
           </div>
           </div>
           <div style={styles.center}>
-            <Pressure />
-            <br />
-            <div style={styles.label}>
-              Pressure Sensor
-            </div>
-          </div>
-          </SplitPane>
-        </div>
-        <div>
-          <SplitPane split="horizontal" defaultSize="50%">
-          <div style={styles.center}>
             <Temperature />
             <br />
             <div style={styles.label}>
               Temperature Sensor
             </div>
           </div>
+          </SplitPane>
+        </div>
+        <div>
+          <SplitPane split="vertical" defaultSize="60%" paneStyle={{background: "#282a36"}}>
+          <SplitPane split="vertical" defaultSize="50%">
+          <div style={styles.center}>
+            <Pressure />
+            <br />
+            <div style={styles.label}>
+              Pressure Sensor
+            </div>
+          </div>
+          <div style={styles.center}>
+            <Sound />
+            <br />
+            <div style={styles.label}>
+              Sound Sensor
+            </div>
+          </div>
+          </SplitPane>
+          
           <div style={styles.center}>
             <Vibrations />
             <br />

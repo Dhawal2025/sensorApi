@@ -49,7 +49,7 @@ class Temperature extends Component {
 
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
-            this.setState({currentFurnaceTemperature: res.data.currentFurnaceTemperature})
+            this.setState({tempReading: res.data.currentFurnaceTemperatureCelcius})
             if(res.data.criticalFurnaceTemperature) {
                 if(!this.state.tempModalIsOpen) {
                     if(!this.state.tempNoted) {
@@ -75,7 +75,6 @@ class Temperature extends Component {
                     height="250"
                     reverseGradient={true}
                 />
-                <h2>State:- {this.state.tempModalIsOpen}</h2>
                 <div>
                     <Modal
                     isOpen={this.state.tempModalIsOpen}
