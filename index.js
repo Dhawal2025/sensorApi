@@ -13,6 +13,7 @@ var temperatureSensor = require('./sensors/temperature-sensor.js')
 var vibrationsSensor = require('./sensors/vibrations-sensor.js')
 var soundSensor = require('./sensors/sound-sensor.js')
 var pressureSensor = require('./sensors/pressure-sensor.js')
+var furnaceSensor = require('./sensors/furnace-sensor.js')
 
 /*********************DATABASE VARIABLES*****************************/
 var db
@@ -178,7 +179,7 @@ app.get('/sendFurnaceTemperature', async function(req, res) {
     currentFurnaceTemperatureFahrenhiet = Number(req.query.furnaceFah);
 
     //trigger alarm if critical value reached
-    if(currentFurnaceTemperature > furnaceTemperatureThreshold)
+    if(currentFurnaceTemperatureCelcius > furnaceTemperatureThreshold)
         alarmStatus = true
     else
         alarmStatus = false
