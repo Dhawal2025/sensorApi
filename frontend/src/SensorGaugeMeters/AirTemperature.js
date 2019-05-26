@@ -58,6 +58,7 @@ class AirTemperature extends Component {
                 }
             } else {
                 this.setState({ tempModalIsOpen: false, tempNoted: false });
+                axios.get('/turnOffAlarm').then(res => console.log(res))
             }
         }) , 2000)
     }
