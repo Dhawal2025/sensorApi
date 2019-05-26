@@ -4,21 +4,28 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import axios from 'axios';
 
 class AirQuality extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPpmReading: 0,
+            averagePpmReading: 2,
+            maxPpmReading: 3,
+            humModalIsOpen: false,
+            humNoted: false
+        };
+    }
+
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({pressureReading: res.data.currentPressure});
-            if(res.data.criticalPressure) {
-                if(!this.state.pressureModalIsOpen) {
-                    if(!this.state.pressureNoted) {
-                        this.setState({ pressureModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ pressureModalIsOpen: false, pressureNoted: false });
-            }
+            this.setState({
+                currentPpmReading: res.data.currentPpm,
+                averagePpmReading: res.data.averagePpm,
+                maxPpmReading: res.data.maxPpm,                
+            });
         }) , 2000)
     }
 
@@ -36,10 +43,10 @@ class AirQuality extends Component {
                 <TableBody>
                     <TableRow>
                     <TableCell align="center" style={{color: 'white', fontSize: 20}}>
-                        0
+                        {this.state.currentPpmReading}
                     </TableCell>
-                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>50</TableCell>
-                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>100</TableCell>
+                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>{this.state.averagePpmReading}}</TableCell>
+                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>{this.state.maxPpmReading}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
