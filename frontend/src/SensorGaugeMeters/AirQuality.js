@@ -45,7 +45,7 @@ class AirQuality extends Component {
                     <TableCell align="center" style={{color: 'white', fontSize: 20}}>
                         {this.state.currentPpmReading}
                     </TableCell>
-                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>{this.state.averagePpmReading}}</TableCell>
+                    <TableCell align="center" style={{color: 'white', fontSize: 20}}>{this.state.averagePpmReading}</TableCell>
                     <TableCell align="center" style={{color: 'white', fontSize: 20}}>{this.state.maxPpmReading}</TableCell>
                     </TableRow>
                 </TableBody>
