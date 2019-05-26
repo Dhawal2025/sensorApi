@@ -50,7 +50,7 @@ class AirTemperature extends Component {
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
             this.setState({tempReading: res.data.currentTemperature})
-            if(res.data.criticalTemperature) {
+            if(res.data.criticalSmoke) {
                 if(!this.state.tempModalIsOpen) {
                     if(!this.state.tempNoted) {
                         this.setState({ tempModalIsOpen: true});
@@ -89,9 +89,9 @@ class AirTemperature extends Component {
                     style={customStyles}
                     contentLabel="Temperature Critical"
                     >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>Room Temperature Critical</h2>
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Smoke Detected</h2>
                         <hr/>
-                        <div>The Room temperature of the region has reached beyond critical limit.</div>
+                        <div>Smoke Detected in the vicinity.</div>
                         <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>

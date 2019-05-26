@@ -22,9 +22,9 @@ class AirQuality extends Component {
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
             this.setState({
-                currentPpmReading: res.data.currentPpm,
-                averagePpmReading: res.data.averagePpm,
-                maxPpmReading: res.data.maxPpm,                
+                currentPpmReading: Math.floor(res.data.currentPpm),
+                averagePpmReading: Math.floor(res.data.averagePpm),
+                maxPpmReading: Math.floor(res.data.maxPpm),                
             });
         }) , 2000)
     }

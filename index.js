@@ -36,6 +36,8 @@ var ppmCalculated = 0;
 var temperatureThreshold = 50
 var humidityThreshold = 50
 var ppmThreshold = 10000
+var smokeThreshold = 200
+var currentSmoke = 0
 /********************************************************************/
 
 /*******************PRESSURE TEMPORARY VARIABLES******************/
@@ -52,6 +54,7 @@ var furnaceTemperatureThreshold = 100
 
 /*******************SOUND TEMPORARY VARIABLES******************/
 var currentSound = 0
+var soundThreshold = 55
 /********************************************************************/
 
 /*******************VIBRATION TEMPORARY VARIABLES******************/
@@ -81,7 +84,7 @@ app.get('/sendAirQuality', async function(req, res) {
 });
 
 app.get('/sendTemperature', async function(req, res) {
-    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum)) || isNaN(Number(req.query.ppm))) {
+    if(isNaN(Number(req.query.temp)) || isNaN(Number(req.query.hum)) || isNaN(Number(req.query.ppm)) || isNaN(Number(req.query.smoke))) {
         console.log("invalid data values sent")
         return res.send(false)
     }
@@ -93,9 +96,9 @@ app.get('/sendTemperature', async function(req, res) {
     averagePpm = averagePpm * ppmCalculated + currentPpm;
     ppmCalculated++;
     averagePpm = averagePpm / ppmCalculated;
-
+    currentSmoke = Number(req.query.smoke);
     //trigger alarm if critical value reached
-    if(currentTemperature > temperatureThreshold || currentHumidity > humidityThreshold || currentPpm > ppmThreshold)
+    if(currentTemperature > temperatureThreshold || currentHumidity > humidityThreshold || currentPpm > ppmThreshold || currentSmoke > smokeThreshold)
         alarmStatus = true
     else
         alarmStatus = false
@@ -104,6 +107,7 @@ app.get('/sendTemperature', async function(req, res) {
     console.log("The temperature is:- " + req.query.temp);
     console.log("The humidity is:- ", req.query.hum);
     console.log("The ppm is:- ", req.query.ppm);
+    console.log("The smoke is:- ", req.query.smoke);
 
     var response = await temperatureSensor.storeTemperature(db, currentTemperature, currentHumidity, currentPpm);
     if(response == true) {
@@ -211,11 +215,13 @@ app.get('/getCurrentTemperature', async function(req, res) {
         criticalTemperature: (currentTemperature > temperatureThreshold),
         criticalHumidity: (currentHumidity > humidityThreshold),
         criticalPpm: (currentPpm > ppmThreshold),
+        criticalSmoke: (currentSmoke > smokeThreshold),
         currentTemperature: currentTemperature,
         currentHumidity: currentHumidity,
         currentPpm: currentPpm,
         maxPpm: maxPpm,
-        averagePpm: averagePpm
+        averagePpm: averagePpm,
+        currentSmoke: currentSmoke
     };
     var response = currentData;
     return res.send(response);
@@ -244,7 +250,8 @@ app.get('/getCurrentFurnaceTemperature', async function(req, res) {
 
 app.get('/getCurrentSound', async function(req, res) {
     var currentData = {
-        currentSoundStatus: currentSoundStatus
+        critical: currentSound > soundThreshold,
+        currentSound: currentSound
     };
 
     var response = currentData;
