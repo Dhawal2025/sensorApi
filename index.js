@@ -115,7 +115,7 @@ app.get('/sendTemperature', async function(req, res) {
     } else {
         console.log("unsuccessful");
     }
-    return res.send(response);
+    return res.send((currentSmoke > smokeThreshold));
 });
 
 app.get('/sendSound', async function(req, res) {
@@ -259,7 +259,7 @@ app.get('/getCurrentSound', async function(req, res) {
 });
 
 app.get('/getAlarmStatus', async function(req, res) {
-    var response = alarmStatus;
+    var response = (currentSmoke > smokeThreshold);
     return res.send(response);
 });
 
