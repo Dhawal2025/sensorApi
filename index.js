@@ -131,9 +131,9 @@ app.get('/sendVibrations', async function(req, res) {
         console.log("invalid data values sent")
         return res.send(false)
     }
-    currentX = req.query.x
-    currentY = req.query.y
-    currentZ = req.query.z
+    currentX = Number(req.query.x)
+    currentY = Number(req.query.y)
+    currentZ = Number(req.query.z)
     
     console.log("send Vibrations endpoint hit")
     var response = await vibrationsSensor.storeVibration();
@@ -245,6 +245,17 @@ app.get('/getCurrentFurnaceTemperature', async function(req, res) {
 app.get('/getCurrentSound', async function(req, res) {
     var currentData = {
         currentSoundStatus: currentSoundStatus
+    };
+
+    var response = currentData;
+    return res.send(response);
+});
+
+app.get('/getCurrentVibrations', async function(req, res) {
+    var currentData = {
+        currentX: currentX,
+        currentY: currentY,
+        currentZ: currentZ
     };
 
     var response = currentData;
