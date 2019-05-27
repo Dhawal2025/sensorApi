@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RTChart from 'react-rt-chart';
 import '../css/c3.css';
+import Axios from 'axios';
 
 class Vibrations extends Component {
     
@@ -12,7 +13,14 @@ class Vibrations extends Component {
     componentDidMount() {
         const min = 4;
         const max = 6;
-        setInterval(() => this.setState({ x: Math.floor(Math.random()*(max-min+1)+min), y: Math.floor(Math.random()*(max-min+1)+min), z: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
+        setInterval( () => Axios.get('/getCurrentVibrations').then(res =>{
+            this.setState({ 
+                x: res.data.currentX,
+                y: res.data.currentY,
+                z: res.data.currentZ
+            })
+        }), 2000)
+        // setInterval(() => this.setState({ x: Math.floor(Math.random()*(max-min+1)+min), y: Math.floor(Math.random()*(max-min+1)+min), z: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
     }
     render() {
         var data = {
@@ -30,7 +38,7 @@ class Vibrations extends Component {
                 right: 50
             },
             axis: {
-                y: { min: 1, max: 10 }
+                y: { min: -3, max: 3 }
             },
             point: {
                 show: false

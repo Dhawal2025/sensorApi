@@ -82,9 +82,9 @@ class AirTemperature extends Component {
             needleWidth: 5,
             needleSharp: true
         }
-        return(
+        return ( 
             <div>
-            <Gauge {...opts} />
+                <Gauge {...opts} />
                 <Modal
                     isOpen={this.state.airTemperatureModalIsOpen}
                     onAfterOpen={this.afterOpenModal}
