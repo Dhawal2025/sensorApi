@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Gauge from 'react-radial-gauge';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
-
-import axios from 'axios';
 
 const customStyles = {
     overlay: {
@@ -26,46 +25,51 @@ const customStyles = {
 };
 
 class AirTemperature extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            tempReading: 0,
-            tempModalIsOpen: false,
-            tempNoted: false
+            currentTemperature: 0,
+            airTemperatureModalIsOpen: false,
+            airTemperatureNoted: false
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.tempCloseModal = this.tempCloseModal.bind(this);
+        this.airTemperatureCloseModal = this.airTemperatureCloseModal.bind(this);
     }
 
     afterOpenModal() {
         this.subtitle.style.color = '#000';
     }
-    
-    tempCloseModal() {
-        console.log("Temperature Close!!")
-        this.setState({tempModalIsOpen: false, tempNoted: true});
+
+    airTemperatureCloseModal() {
+        console.log("airTemperature Close!!")
+        this.setState({airTemperatureModalIsOpen: false, airTemperatureNoted: true});
         axios.get('/turnOffAlarm').then(res => console.log(res))
     }
 
+
     componentDidMount() {
         setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({tempReading: res.data.currentTemperature})
+            this.setState({
+                currentTemperature: res.data.currentTemperature
+            });
             if(res.data.criticalSmoke) {
-                if(!this.state.tempModalIsOpen) {
-                    if(!this.state.tempNoted) {
-                        this.setState({ tempModalIsOpen: true});
+                if(!this.state.airTemperatureModalIsOpen) {
+                    if(!this.state.airTemperatureNoted) {
+                        this.setState({ airTemperatureModalIsOpen: true});
                     }
                 }
             } else {
-                this.setState({ tempModalIsOpen: false, tempNoted: false });
+                this.setState({ airTemperatureModalIsOpen: false, airTemperatureNoted: false });
             }
         }) , 2000)
     }
 
+
     render() {
         let opts = {
             size: 260,
-            currentValue: this.state.tempReading,
+            currentValue: `${this.state.currentTemperature}`,
             dialWidth: 20,
             dialColor: '#AAC4CF',
             progressWidth: 20,
@@ -80,22 +84,19 @@ class AirTemperature extends Component {
         }
         return(
             <div>
-                <Gauge {...opts} />
-                <div>
-                    <Modal
-                    isOpen={this.state.tempModalIsOpen}
+            <Gauge {...opts} />
+                <Modal
+                    isOpen={this.state.airTemperatureModalIsOpen}
                     onAfterOpen={this.afterOpenModal}
-                    onRequestClose={this.tempCloseModal}
+                    onRequestClose={this.airTemperatureCloseModal}
                     style={customStyles}
-                    contentLabel="Temperature Critical"
-                    >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>Smoke Detected</h2>
-                        <hr/>
-                        <div>Smoke Detected in the vicinity.</div>
-                        <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
-                    </Modal>
-                </div>
-
+                    contentLabel="Air Quality Critical"
+                >
+                    <h2 ref={subtitle => this.subtitle = subtitle}>Air Temperature Critical</h2>
+                    <hr/>
+                    <div>The Air Temperature of the region has reached beyond critical limit.</div>
+                    <Button variant="contained" color="primary" onClick={this.airTemperatureCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
+                </Modal>
             </div>
         );
     }

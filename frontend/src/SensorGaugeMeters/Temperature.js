@@ -29,7 +29,7 @@ class Temperature extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            tempReading: 0,
+            currentFurnaceTemperature: 0,
             tempModalIsOpen: false,
             tempNoted: false
         };
@@ -67,7 +67,7 @@ class Temperature extends Component {
             <div>
                 <Thermometer
                     theme="dark"
-                    value={this.state.tempReading}
+                    value={this.state.currentFurnaceTemperature}
                     max="100"
                     steps="3"
                     format="°C"
@@ -83,9 +83,9 @@ class Temperature extends Component {
                     style={customStyles}
                     contentLabel="Temperature Critical"
                     >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>Temperature Critical</h2>
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Furnace Temperature Critical</h2>
                         <hr/>
-                        <div>The temperature of the region has reached beyond critical limit.</div>
+                        <div>The temperature of the Furnace has reached beyond critical limit.</div>
                         <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
