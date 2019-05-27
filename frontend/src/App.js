@@ -38,13 +38,12 @@ class App extends Component {
     return (
       <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
-          <SplitPane split="vertical" defaultSize="50%" paneStyle={{background: "#282a36"}}>
+          <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
             <h1 style={{color: 'white'}}>Humidity </h1>
             <h1 style={{color: 'white'}}>Air Quality </h1>
             <h1 style={{color: 'white'}}>Air Temp </h1>
-            
           </div>
           <div style={styles.centerRow}>
             <Humidity />
@@ -53,11 +52,10 @@ class App extends Component {
           </div>
           </div>
           <div style={styles.center}>
+          <h1 style={{color: "white"}} >
+          Furnace Temperature Sensor
+          </h1>
             <Temperature />
-            <br />
-            <div style={styles.label}>
-              Temperature Sensor
-            </div>
           </div>
           </SplitPane>
         </div>
@@ -65,27 +63,24 @@ class App extends Component {
           <SplitPane split="vertical" defaultSize="60%" paneStyle={{background: "#282a36"}}>
           <SplitPane split="vertical" defaultSize="50%">
           <div style={styles.center}>
+          <h1 style={{color: "white"}} >
+            Pressure Sensor
+          </h1>
             <Pressure />
-            <br />
-            <div style={styles.label}>
-              Pressure Sensor
-            </div>
           </div>
           <div style={styles.center}>
-            <Sound />
-            <br />
-            <div style={styles.label}>
+            <h1 style={{color: "white"}} >
               Sound Sensor
-            </div>
+            </h1>
+            <Sound />
           </div>
           </SplitPane>
           
           <div style={styles.center}>
+          <h1 style={{color: "white"}} >
+            Vibrations Sensor
+          </h1>
             <Vibrations />
-            <br />
-            <div style={styles.label}>
-              Vibrations Sensor
-            </div>
           </div>
           </SplitPane>
         </div>

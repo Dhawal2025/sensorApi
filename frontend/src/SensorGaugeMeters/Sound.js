@@ -53,7 +53,7 @@ class Sound extends Component {
         setInterval(() => this.setState({soundReading: Math.floor(Math.random()*(max-min+1)+min)}) , 2000);
         // setInterval(() => axios.get('/getCurrentsound').then(res => {
         //     this.setState({soundReading: res.data.currentsound});
-        //     if(res.data.criticalsound) {
+        //     if(res.data.criticalSound) {
         //         if(!this.state.soundModalIsOpen) {
         //             if(!this.state.soundNoted) {
         //                 this.setState({ soundModalIsOpen: true});
@@ -79,6 +79,7 @@ class Sound extends Component {
                     height="180"
                     needleTransition="easeElastic"
                     needleTransitionDuration={4000}
+                    ringWidth="100"
                 />
                 <div>
                     <Modal
@@ -87,9 +88,9 @@ class Sound extends Component {
                     style={customStyles}
                     contentLabel="sound Critical"
                     >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>sound Critical</h2>
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Sound Critical</h2>
                         <hr/>
-                        <div>The sound of the region has reached beyond critical limit.</div>
+                        <div>The Sound of the region has reached beyond critical limit.</div>
                         <Button variant="contained" color="primary" onClick={this.soundCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
