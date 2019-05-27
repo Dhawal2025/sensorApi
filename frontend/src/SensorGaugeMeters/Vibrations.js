@@ -19,7 +19,7 @@ class Vibrations extends Component {
                 y: res.data.currentY,
                 z: res.data.currentZ
             })
-        }), 2000)
+        }), 1000)
         // setInterval(() => this.setState({ x: Math.floor(Math.random()*(max-min+1)+min), y: Math.floor(Math.random()*(max-min+1)+min), z: Math.floor(Math.random()*(max-min+1)+min) }), 1000)
     }
     render() {

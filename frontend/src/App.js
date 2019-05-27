@@ -42,7 +42,7 @@ class App extends Component {
           <div style={styles.center}>
           <div style={styles.centerRow}>
             <h1 style={{color: 'white'}}>Humidity </h1>
-            <h1 style={{color: 'white'}}>Air Quality </h1>
+            <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
             <h1 style={{color: 'white'}}>Air Temp </h1>
           </div>
           <div style={styles.centerRow}>
