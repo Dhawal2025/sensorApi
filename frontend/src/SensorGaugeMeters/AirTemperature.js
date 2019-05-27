@@ -92,9 +92,9 @@ class AirTemperature extends Component {
                     style={customStyles}
                     contentLabel="Air Quality Critical"
                 >
-                    <h2 ref={subtitle => this.subtitle = subtitle}>Air Temperature Critical</h2>
+                    <h2 ref={subtitle => this.subtitle = subtitle}>Smoke Detected</h2>
                     <hr/>
-                    <div>The Air Temperature of the region has reached beyond critical limit.</div>
+                    <div>Smoke has been detected in the region.</div>
                     <Button variant="contained" color="primary" onClick={this.airTemperatureCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
                 </Modal>
             </div>

@@ -61,19 +61,20 @@ class Pressure extends Component {
             } else {
                 this.setState({ pressureModalIsOpen: false, pressureNoted: false });
             }
-        }) , 2000)
+        }) , 1000)
     }
 
     render() {
         return(
             <div>
                 <ReactSpeedometer
-                    maxValue={500}
+                    maxValue={120000}
+                    minValue={95000}
                     value={this.state.pressureReading}
                     needleColor="#aac4cf"
                     startColor="#7b88ff"
                     endColor="#49beb7"
-                    segments={10}
+                    segments={5}
                     height="180"
                 />
                 <div>

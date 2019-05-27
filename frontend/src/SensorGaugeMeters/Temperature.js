@@ -29,7 +29,7 @@ class Temperature extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            currentFurnaceTemperature: 0,
+            tempReading: 0,
             tempModalIsOpen: false,
             tempNoted: false
         };
@@ -67,7 +67,7 @@ class Temperature extends Component {
             <div>
                 <Thermometer
                     theme="dark"
-                    value={this.state.currentFurnaceTemperature}
+                    value={this.state.tempReading}
                     max="100"
                     steps="3"
                     format="°C"

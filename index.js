@@ -36,13 +36,13 @@ var ppmCalculated = 0;
 var temperatureThreshold = 50
 var humidityThreshold = 50
 var ppmThreshold = 10000
-var smokeThreshold = 200
+var smokeThreshold = 500
 var currentSmoke = 0
 /********************************************************************/
 
 /*******************PRESSURE TEMPORARY VARIABLES******************/
 var currentPressure = 0
-var pressureThreshold = 100
+var pressureThreshold = 115000
 /********************************************************************/
 
 /*******************FURNACE TEMPORARY VARIABLES******************/
