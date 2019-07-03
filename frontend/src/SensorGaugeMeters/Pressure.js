@@ -3,6 +3,9 @@ import ReactSpeedometer from "react-d3-speedometer";
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import constants from "../../../projectConstants.js"
+const client = new W3CWebSocket('ws://127.0.0.1:5000?connectionType=client');
 
 const customStyles = {
     overlay: {
@@ -50,18 +53,18 @@ class Pressure extends Component {
     componentDidMount() {
         const min = 1;
         const max = 500;
-        setInterval(() => axios.get('/getCurrentPressure').then(res => {
-            this.setState({pressureReading: res.data.currentPressure});
-            if(res.data.criticalPressure) {
-                if(!this.state.pressureModalIsOpen) {
-                    if(!this.state.pressureNoted) {
-                        this.setState({ pressureModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ pressureModalIsOpen: false, pressureNoted: false });
+        client.onopen = () => {
+            console.log('WebSocket Client Connected');
+        };
+        client.onmessage = (message) => {
+            const json = JSON.parse(message.data);
+            if(json.sensorType == constants.sensorType.PRESSURE) {
+                console.log(json)
+                this.setState({
+                    pressureReading: json.data.currentPressure
+                }) 
             }
-        }) , 2000)
+        };
     }
 
     render() {

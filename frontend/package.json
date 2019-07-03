@@ -14,7 +14,8 @@
     "react-rt-chart": "^2.0.0",
     "react-scripts": "0.9.5",
     "react-split-pane": "^0.1.87",
-    "react-thermometer-component": "^1.0.1"
+    "react-thermometer-component": "^1.0.1",
+    "websocket": "^1.0.28"
   },
   "devDependencies": {
     "react-canvas-gauge": "^1.0.2"
