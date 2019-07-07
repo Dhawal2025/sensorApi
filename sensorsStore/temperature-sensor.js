@@ -1,7 +1,12 @@
 var currentTemperatures = []
+var temperatureThresholds = []
 var sensorCount = 1;
 currentTemperatures.push({
-    currentTemperature: -1
+    currentTemperature: -1,
+    temperatureCritical: false
+})
+temperatureThresholds.push({
+    temperatureThreshold: 10,
 })
 function getCurrentTemperature(sensorIndex) {
     
@@ -25,6 +30,10 @@ function setCurrentTemperature(sensorIndex, currentTemperature) {
         return false;
     } else {
         currentTemperatures[sensorIndex - 1].currentTemperature = currentTemperature;
+        if(currentTemperatures[sensorIndex - 1],currentTemperature > temperatureThresholds[sensorIndex - 1].temperatureThreshold)
+            currentTemperatures[sensorIndex - 1].temperatureCritical = true;
+        else
+            currentTemperatures[sensorIndex - 1].temperatureCritical = false;
     }
 }
 

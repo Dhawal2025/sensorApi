@@ -25,10 +25,10 @@ client.on('connect', function(connection) {
     
     function sendNumber() {
         if (connection.connected) {
-            var number = Math.round(Math.random() * 100);
+            var number = 5 + Math.round(Math.random() * 10);
             connection.sendUTF(JSON.stringify({
-                currentPressure: number,
-                sensorType: constants.sensorType.PRESSURE,
+                currentTemperature: 9,
+                sensorType: constants.sensorType.TEMPERATURE,
                 sensorIndex: 1
             }));
             setTimeout(sendNumber, 1000);
