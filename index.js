@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 var sensorState = require("./sensorState.js");
 const constants = require('./projectConstants.js')
-server.listen(webSocketsServerPort);
+// server.listen(webSocketsServerPort);
 const wsServer = new webSocketServer({
   httpServer: server
 });
@@ -80,6 +80,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
 })
 
-server.listen(process.env.PORT || 8000, () => {
+server.listen(process.env.PORT || 5000, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });
