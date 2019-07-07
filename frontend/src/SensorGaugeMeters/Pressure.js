@@ -59,7 +59,7 @@ class Pressure extends Component {
         client.onmessage = (message) => {
             const json = JSON.parse(message.data);
             if(json.sensorType == constants.sensorType.PRESSURE) {
-                console.log(json)
+                console.log(json.data.currentPressure);
                 this.setState({
                     pressureReading: json.data.currentPressure
                 }) 

@@ -40,9 +40,10 @@ wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
     var connectionType = request.resourceURL.query.connectionType
     var userId = getUniqueID();
-    console.log(connectionType)
+    console.log(connectionType);
     if(connectionType == connections.CLIENT) {
         clients[userId] = connection;
+        clients[userId].send('HELLO CLIENT');
     } else {
         sensors[userId] = connection;
         sensors[userId].on('message', function(message) {

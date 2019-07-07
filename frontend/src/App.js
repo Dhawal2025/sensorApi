@@ -80,7 +80,7 @@ class App extends Component {
           <h1 style={{color: "white"}} >
             Vibrations Sensor
           </h1>
-            <Vibrations />
+            {/* <Vibrations /> */}
           </div>
           </SplitPane>
         </div>
