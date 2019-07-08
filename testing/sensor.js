@@ -27,9 +27,8 @@ client.on('connect', function(connection) {
         if (connection.connected) {
             var number = 5 + Math.round(Math.random() * 10);
             connection.sendUTF(JSON.stringify({
-                currentAirTemperature: 9,
-                currentHumidity: 9,
-                sensorType: constants.sensorType.AIR,
+                currentPressure: 9,
+                sensorType: constants.sensorType.PRESSURE,
                 sensorIndex: 1
             }));
             setTimeout(sendNumber, 1000);
