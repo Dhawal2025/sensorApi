@@ -86,10 +86,10 @@ class Sound extends Component {
                     needleColor = "#004d61"
                     segments={1}
                     needleHeightRatio={0.6}
-                    height="180"
+                    height={180}
                     needleTransition="easeElastic"
                     needleTransitionDuration={4000}
-                    ringWidth="100"
+                    ringWidth={100}
                 />
                 <div>
                     <Modal

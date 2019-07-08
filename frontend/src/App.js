@@ -49,26 +49,26 @@ class App extends Component {
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
-            <div style={{color: 'white', fontSize: window.innerWidth > 1000 ? 50 : 20}}>Humidity {window.innerWidth > 1000 ? 50 : 100} </div>
+            <h1 style={{color: 'white'}}>Humidity </h1>
             <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
             <h1 style={{color: 'white'}}>Air Temp </h1>
           </div>
           <div style={styles.centerRow}>
-            {/* <Humidity />
-            <AirQuality />
-            <AirTemperature style={{marginBottom: "20%"}} sensorType={constants.sensorType.AIR} /> */}
+            <Humidity sensorType={constants.sensorType.AIR}  />
+            <AirQuality sensorType={constants.sensorType.AIR}  />
+            <AirTemperature style={{marginBottom: "20%"}} sensorType={constants.sensorType.AIR} />
           </div>
           </div>
           <div style={styles.center}>
           <h1 style={{color: "white"}} >
           Furnace Temperature Sensor
           </h1>
-            {/* <Temperature sensorType={constants.sensorType.TEMPERATURE}  /> */}
+            <Temperature sensorType={constants.sensorType.TEMPERATURE}  />
           </div>
           </SplitPane>
         </div>
         <div>
-          <SplitPane split="vertical" defaultSize="60%" paneStyle={{background: "#282a36"}}>
+          <SplitPane split="vertical" defaultSize="65%" paneStyle={{background: "#282a36"}}>
           <SplitPane split="vertical" defaultSize="50%">
           <div style={styles.center}>
           <h1 style={{color: "white"}} >
@@ -80,7 +80,7 @@ class App extends Component {
             <h1 style={{color: "white"}} >
               Sound Sensor
             </h1>
-            {/* <Sound sensorType={constants.sensorType.SOUND} /> */}
+            <Sound sensorType={constants.sensorType.SOUND} />
           </div>
           </SplitPane>
           
@@ -88,7 +88,7 @@ class App extends Component {
           <h1 style={{color: "white"}} >
             Vibrations Sensor
           </h1>
-            {/* <Vibrations /> */}
+            <Vibrations sensorType={constants.sensorType.VIBRATION}  />
           </div>
           </SplitPane>
         </div>

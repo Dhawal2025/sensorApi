@@ -5,6 +5,9 @@ import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import axios from 'axios';
 import LiquidFillGauge from 'react-liquid-gauge';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const location = window.location.host;
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -31,7 +34,7 @@ class Humidity extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            humReading: 0,
+            humidityReading: 0,
             humModalIsOpen: false,
             humNoted: false
         };
@@ -53,18 +56,27 @@ class Humidity extends Component {
     }
 
     componentDidMount() {
-        // setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-        //     this.setState({humidityReading: res.data.currentHumidity})
-        //     if(res.data.criticalHumidity) {
-        //         if(!this.state.humModalIsOpen) {
-        //             if(!this.state.humNoted) {
-        //                 this.setState({ humModalIsOpen: true});
-        //             }
-        //         }
-        //     } else {
-        //         this.setState({ humModalIsOpen: false, humNoted: false });
-        //     }
-        // }) , 2000)
+        try {
+            client.onopen = () => {
+                console.log('Humidity WebSocket Client Connected');
+                console.log(window.location);
+            };
+            client.onmessage = (message) => {
+               const json = JSON.parse(message.data);
+                console.log(json, "TEMP JSON");
+                
+                if(json.sensorType == this.props.sensorType) {
+                    console.log(window.location.href);
+                    
+                    console.log(json.data.currentHumidity);
+                    this.setState({
+                        humidityReading: json.data.currentHumidity
+                    }) 
+                }
+            };
+        } catch(error) {
+            console.log(error);            
+        }
     }
 
     render() {

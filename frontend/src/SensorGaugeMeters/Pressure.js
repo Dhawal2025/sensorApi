@@ -20,7 +20,7 @@ const customStyles = {
       },
     content : {
         top: '62.5%',
-        left: '10.5%',
+        left: '1%',
         right: 'auto',
         bottom: 'auto',
         width: '25%',
@@ -33,9 +33,10 @@ class Pressure extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            pressureReading: 0,
+            pressureReading: 90000,
             pressureModalIsOpen: false,
-            pressureNoted: false
+            pressureNoted: false,
+            differenceIncreased: false
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
@@ -45,6 +46,10 @@ class Pressure extends Component {
         this.subtitle.style.color = '#000';
     }
     
+    malfunctionCloseModal = () => {
+        this.setState({differenceIncreased: false});
+    }
+
     pressureCloseModal() {
         console.log("Pressure Close!!");
         this.setState({pressureModalIsOpen: false, pressureNoted: true});
@@ -64,7 +69,8 @@ class Pressure extends Component {
                     
                     console.log(json.data.currentPressure);
                     this.setState({
-                        pressureReading: json.data.currentPressure
+                        pressureReading: json.data.currentPressure,
+                        differenceIncreased: json.data.differenceIncreased
                     }) 
                 }
             };
@@ -77,14 +83,14 @@ class Pressure extends Component {
         return(
             <div>
                 <ReactSpeedometer
-                    maxValue={120000}
-                    minValue={95000}
+                    maxValue={110000}
+                    minValue={90000}
                     value={this.state.pressureReading}
                     needleColor="#aac4cf"
                     startColor="#7b88ff"
                     endColor="#49beb7"
                     segments={5}
-                    height="180"
+                    height={180}
                 />
                 <div>
                     <Modal
@@ -97,6 +103,19 @@ class Pressure extends Component {
                         <hr/>
                         <div>The pressure of the region has reached beyond critical limit.</div>
                         <Button variant="contained" color="primary" onClick={this.pressureCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
+                    </Modal>
+                </div>
+                <div>
+                    <Modal
+                    isOpen={this.state.differenceIncreased}
+                    onAfterOpen={this.afterOpenModal}
+                    style={customStyles}
+                    contentLabel="Difference Increased"
+                    >
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Sensor Malfunction</h2>
+                        <hr/>
+                        <div>One of the pressure sensor is malfunctioning.</div>
+                        <Button variant="contained" color="primary" onClick={this.malfunctionCloseModal} style={{float: 'right'}}>OK!</Button>
                     </Modal>
                 </div>
             </div>

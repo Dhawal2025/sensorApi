@@ -4,7 +4,6 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import constants from "../../../projectConstants.js"
 const location = window.location.host;
 const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
@@ -68,7 +67,7 @@ class AirTemperature extends Component {
                     
                     console.log(json.data.currentTemperature);
                     this.setState({
-                        currentTemperature: json.data.currentTemperature
+                        currentTemperature: json.data.currentAirTemperature
                     }) 
                 }
             };
