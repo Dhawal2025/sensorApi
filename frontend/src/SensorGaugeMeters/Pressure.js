@@ -37,7 +37,8 @@ class Pressure extends Component {
             pressureModalIsOpen: false,
             pressureNoted: false,
             differenceIncreased: false,
-            storeIndexes: []
+            storeIndexes: [],
+            selectedIndex: -1
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
@@ -66,13 +67,22 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                    console.log(window.location.href);
-                    
-                    console.log(json.data.currentPressure);
+                    console.log(json, "PRESSURE");
+                    console.log(this.state, "STATE");
+                             
+                   if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         pressureReading: json.data.currentPressure,
                         differenceIncreased: json.data.differenceIncreased
                     }) 
+                   }
+                   else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
+                        const list = [...this.state.storeIndexes, json.sensorIndex];
+                        this.setState({storeIndexes: list});
+                    }
+                    if(this.state.storeIndexes.length == 1) {
+                        this.setState({selectedIndex: this.state.storeIndexes[0]});
+                    }
                 }
             };
         } catch(error) {
