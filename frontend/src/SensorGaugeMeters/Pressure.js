@@ -71,8 +71,10 @@ class Pressure extends Component {
                     this.setState({
                         pressureReading: json.data.currentPressure,
                         differenceIncreased: json.data.differenceIncreased,
-                        differenceIncreasedNoted: !json.data.differenceIncreased ? false : this.state.differenceIncreasedNoted  
                     });
+                    if (!this.state.differenceIncreased && this.state.differenceIncreasedNoted) {
+                        this.setState({differenceIncreasedNoted: false});
+                    }
                     console.log(this.state.differenceIncreasedNoted, "DIfference Increased Noted");
                 }
             };
