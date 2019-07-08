@@ -36,7 +36,8 @@ class Pressure extends Component {
             pressureReading: 90000,
             pressureModalIsOpen: false,
             pressureNoted: false,
-            differenceIncreased: false
+            differenceIncreased: false,
+            differenceIncreasedNoted: false
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
@@ -47,7 +48,7 @@ class Pressure extends Component {
     }
     
     malfunctionCloseModal = () => {
-        this.setState({differenceIncreased: false});
+        this.setState({differenceIncreased: false, differenceIncreasedNoted: true});
     }
 
     pressureCloseModal() {
@@ -66,12 +67,13 @@ class Pressure extends Component {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
                     console.log(window.location.href);
-                    
                     console.log(json.data.currentPressure);
                     this.setState({
                         pressureReading: json.data.currentPressure,
-                        differenceIncreased: json.data.differenceIncreased
-                    }) 
+                        differenceIncreased: json.data.differenceIncreased,
+                        differenceIncreasedNoted: !json.data.differenceIncreased ? false : this.state.differenceIncreasedNoted  
+                    });
+                    console.log(this.state.differenceIncreasedNoted, "DIfference Increased Noted");
                 }
             };
         } catch(error) {
@@ -107,7 +109,7 @@ class Pressure extends Component {
                 </div>
                 <div>
                     <Modal
-                    isOpen={this.state.differenceIncreased}
+                    isOpen={this.state.differenceIncreased && !this.state.differenceIncreasedNoted}
                     onAfterOpen={this.afterOpenModal}
                     style={customStyles}
                     contentLabel="Difference Increased"
