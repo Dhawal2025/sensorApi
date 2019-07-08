@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
-const client = new W3CWebSocket('ws://sensorapiturings.herokuapp.com?connectionType=client');
+const client = new W3CWebSocket('wss://sensorapiturings.herokuapp.com?connectionType=client');
 
 const customStyles = {
     overlay: {
