@@ -13,7 +13,8 @@ var sensorState = require("./sensorState.js");
 const constants = require('./projectConstants.js')
 // server.listen(webSocketsServerPort);
 const wsServer = new webSocketServer({
-  httpServer: server
+  httpServer: server,
+  path: "/echo"
 });
 
 const connections = {
@@ -43,8 +44,9 @@ wsServer.on('request', function(request) {
     console.log(connectionType);
     if(connectionType == connections.CLIENT) {
         clients[userId] = connection;
-        clients[userId].send('HELLO CLIENT');
+        // clients[userId].send('HELLO CLIENT');
     } else {
+
         sensors[userId] = connection;
         sensors[userId].on('message', function(message) {
             const dataFromClient = JSON.parse(message.utf8Data);

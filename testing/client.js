@@ -22,4 +22,4 @@ client.on('connect', function(connection) {
     });
 });
  
-client.connect('ws://sensorapiturings.herokuapp.com?connectionType=client');
+client.connect('ws://localhost:5000/echo?connectionType=client');

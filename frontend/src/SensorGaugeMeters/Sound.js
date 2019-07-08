@@ -3,6 +3,9 @@ import ReactSpeedometer from "react-d3-speedometer";
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+const location = window.location.host;
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -48,21 +51,28 @@ class Sound extends Component {
     }
 
     componentDidMount() {
-        const min = 45;
-        const max = 55;
-        // setInterval(() => this.setState({soundReading: Math.floor(Math.random()*(max-min+1)+min)}) , 2000);
-        // setInterval(() => axios.get('/getCurrentsound').then(res => {
-        //     this.setState({soundReading: res.data.currentSound});
-        //     if(res.data.criticalSound) {
-        //         if(!this.state.soundModalIsOpen) {
-        //             if(!this.state.soundNoted) {
-        //                 this.setState({ soundModalIsOpen: true});
-        //             }
-        //         }
-        //     } else {
-        //         this.setState({ soundModalIsOpen: false, soundNoted: false });
-        //     }
-        // }) , 1000)
+        try {
+            client.onopen = () => {
+                console.log('Sound WebSocket Client Connected');
+                console.log(window.location);
+            };
+            client.onmessage = (message) => {
+               const json = JSON.parse(message.data);
+                console.log(json, "TEMP JSON");
+                
+                if(json.sensorType == this.props.sensorType) {
+                    console.log(window.location.href);
+                    
+                    console.log(json.data.soundReading);
+                    this.setState({
+                        soundReading: json.data.soundReading
+                    }) 
+                }
+            };
+        } catch(error) {
+            console.log(error);
+            
+        }
     }
 
     render() {

@@ -3,6 +3,10 @@ import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import Thermometer from 'react-thermometer-component';
 import axios from 'axios';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import constants from "../../../projectConstants.js"
+const location = window.location.host;
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -48,18 +52,27 @@ class Temperature extends Component {
     }
 
     componentDidMount() {
-        // setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
-        //     this.setState({tempReading: res.data.currentFurnaceTemperatureCelcius})
-        //     if(res.data.criticalFurnaceTemperature) {
-        //         if(!this.state.tempModalIsOpen) {
-        //             if(!this.state.tempNoted) {
-        //                 this.setState({ tempModalIsOpen: true});
-        //             }
-        //         }
-        //     } else {
-        //         this.setState({ tempModalIsOpen: false, tempNoted: false });
-        //     }
-        // }) , 2000)
+        client.onopen = () => {
+            console.log('Furnance Temperature WebSocket Client Connected');
+            console.log(window.location);
+        };
+        client.onmessage = (message) => {
+           try {
+            const json = JSON.parse(message.data);
+            console.log(json, "TEMP JSON");
+            
+            if(json.sensorType == this.props.sensorType) {
+                console.log(window.location.href);
+                
+                console.log(json.data.currentTemperature);
+                this.setState({
+                    tempReading: json.data.currentTemperature
+                }) 
+            }
+           } catch(error) {
+            console.log(error);
+        }
+        };
     }
 
     render() {

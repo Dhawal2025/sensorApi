@@ -10,13 +10,7 @@ import Humidity from './SensorGaugeMeters/Humidity';
 import AirTemperature from './SensorGaugeMeters/AirTemperature';
 import AirQuality from './SensorGaugeMeters/AirQuality';
 import Sound from './SensorGaugeMeters/Sound';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-// import constants from "../../../projectConstants.js"
-const location = window.location.host;
-console.log(window.location.protocol);
-
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}?connectionType=client`);
-
+import constants from "../../projectConstants.js"
 
 class App extends Component {
   render() {
@@ -42,27 +36,34 @@ class App extends Component {
       }
     };
 
+    // fontSizer = () => {
+    //   var width = window.innerWidth;
+    //   if (width > 1000) return 50;
+    //   else if (width > 500) return 30;
+    //   else return 15;
+    // }
+
     return (
       <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
-            <h1 style={{color: 'white'}}>Humidity </h1>
+            <div style={{color: 'white', fontSize: window.innerWidth > 1000 ? 50 : 20}}>Humidity {window.innerWidth > 1000 ? 50 : 100} </div>
             <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
             <h1 style={{color: 'white'}}>Air Temp </h1>
           </div>
           <div style={styles.centerRow}>
-            <Humidity />
+            {/* <Humidity />
             <AirQuality />
-            <AirTemperature style={{marginBottom: "20%"}} />
+            <AirTemperature style={{marginBottom: "20%"}} sensorType={constants.sensorType.AIR} /> */}
           </div>
           </div>
           <div style={styles.center}>
           <h1 style={{color: "white"}} >
           Furnace Temperature Sensor
           </h1>
-            <Temperature />
+            {/* <Temperature sensorType={constants.sensorType.TEMPERATURE}  /> */}
           </div>
           </SplitPane>
         </div>
@@ -73,13 +74,13 @@ class App extends Component {
           <h1 style={{color: "white"}} >
             Pressure Sensor
           </h1>
-            <Pressure client={client} />
+            <Pressure sensorType={constants.sensorType.PRESSURE} />
           </div>
           <div style={styles.center}>
             <h1 style={{color: "white"}} >
               Sound Sensor
             </h1>
-            <Sound />
+            {/* <Sound sensorType={constants.sensorType.SOUND} /> */}
           </div>
           </SplitPane>
           

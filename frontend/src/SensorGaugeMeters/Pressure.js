@@ -6,9 +6,7 @@ import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
 const location = window.location.host;
-console.log(window.location.protocol);
-
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}?connectionType=client`);
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -39,8 +37,6 @@ class Pressure extends Component {
             pressureModalIsOpen: false,
             pressureNoted: false
         };
-        console.log(props, "props");
-        
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
     }
@@ -56,23 +52,25 @@ class Pressure extends Component {
     }
 
     componentDidMount() {
-        const min = 1;
-        const max = 500;
-        client.onopen = () => {
-            console.log('Pressure WebSocket Client Connected');
-            console.log(window.location);
-        };
-        client.onmessage = (message) => {
-            const json = JSON.parse(message.data);
-            if(json.sensorType == constants.sensorType.PRESSURE) {
-                console.log(window.location.href);
-                
-                console.log(json.data.currentPressure);
-                this.setState({
-                    pressureReading: json.data.currentPressure
-                }) 
-            }
-        };
+        try {
+            client.onopen = () => {
+                console.log('Pressure WebSocket Client Connected');
+                console.log(window.location);
+            };
+            client.onmessage = (message) => {
+                const json = JSON.parse(message.data);
+                if(json.sensorType == constants.sensorType.PRESSURE) {
+                    console.log(window.location.href);
+                    
+                    console.log(json.data.currentPressure);
+                    this.setState({
+                        pressureReading: json.data.currentPressure
+                    }) 
+                }
+            };
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     render() {

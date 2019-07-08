@@ -3,6 +3,10 @@ import Gauge from 'react-radial-gauge';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import constants from "../../../projectConstants.js"
+const location = window.location.host;
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -33,6 +37,7 @@ class AirTemperature extends Component {
             airTemperatureModalIsOpen: false,
             airTemperatureNoted: false
         };
+        console.log(props, "Air temperature")
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.airTemperatureCloseModal = this.airTemperatureCloseModal.bind(this);
     }
@@ -49,20 +54,27 @@ class AirTemperature extends Component {
 
 
     componentDidMount() {
-        // setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-        //     this.setState({
-        //         currentTemperature: res.data.currentTemperature
-        //     });
-        //     if(res.data.criticalSmoke) {
-        //         if(!this.state.airTemperatureModalIsOpen) {
-        //             if(!this.state.airTemperatureNoted) {
-        //                 this.setState({ airTemperatureModalIsOpen: true});
-        //             }
-        //         }
-        //     } else {
-        //         this.setState({ airTemperatureModalIsOpen: false, airTemperatureNoted: false });
-        //     }
-        // }) , 2000)
+        try {
+            client.onopen = () => {
+                console.log('Air Temperature WebSocket Client Connected');
+                console.log(window.location);
+            };
+            client.onmessage = (message) => {
+               const json = JSON.parse(message.data);
+                console.log(json, "TEMP JSON");
+                
+                if(json.sensorType == this.props.sensorType) {
+                    console.log(window.location.href);
+                    
+                    console.log(json.data.currentTemperature);
+                    this.setState({
+                        currentTemperature: json.data.currentTemperature
+                    }) 
+                }
+            };
+        } catch(error) {
+            console.log(error);            
+        }
     }
 
 
