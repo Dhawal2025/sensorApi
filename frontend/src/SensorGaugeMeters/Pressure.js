@@ -36,7 +36,8 @@ class Pressure extends Component {
             pressureReading: 90000,
             pressureModalIsOpen: false,
             pressureNoted: false,
-            differenceIncreased: false
+            differenceIncreased: false,
+            storeIndexes: []
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
