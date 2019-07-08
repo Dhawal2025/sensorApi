@@ -10,6 +10,13 @@ import Humidity from './SensorGaugeMeters/Humidity';
 import AirTemperature from './SensorGaugeMeters/AirTemperature';
 import AirQuality from './SensorGaugeMeters/AirQuality';
 import Sound from './SensorGaugeMeters/Sound';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+// import constants from "../../../projectConstants.js"
+const location = window.location.host;
+console.log(window.location.protocol);
+
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}?connectionType=client`);
+
 
 class App extends Component {
   render() {
@@ -66,7 +73,7 @@ class App extends Component {
           <h1 style={{color: "white"}} >
             Pressure Sensor
           </h1>
-            <Pressure />
+            <Pressure client={client} />
           </div>
           <div style={styles.center}>
             <h1 style={{color: "white"}} >

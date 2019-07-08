@@ -54,23 +54,23 @@ class AirQuality extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({
+        // setInterval(() => axios.get('/getCurrentTemperature').then(res => {
+        //     this.setState({
 
-                currentPpm: Math.floor(res.data.currentPpm), 
-                maxPpm: Math.floor(res.data.maxPpm),
-                averagePpm: Math.floor(res.data.averagePpm)
-                });
-            if(res.data.criticalPpm) {
-                if(!this.state.ppmModalIsOpen) {
-                    if(!this.state.ppmNoted) {
-                        this.setState({ ppmModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ ppmModalIsOpen: false, ppmNoted: false });
-            }
-        }) , 2000)
+        //         currentPpm: Math.floor(res.data.currentPpm), 
+        //         maxPpm: Math.floor(res.data.maxPpm),
+        //         averagePpm: Math.floor(res.data.averagePpm)
+        //         });
+        //     if(res.data.criticalPpm) {
+        //         if(!this.state.ppmModalIsOpen) {
+        //             if(!this.state.ppmNoted) {
+        //                 this.setState({ ppmModalIsOpen: true});
+        //             }
+        //         }
+        //     } else {
+        //         this.setState({ ppmModalIsOpen: false, ppmNoted: false });
+        //     }
+        // }) , 2000)
     }
 
 

@@ -48,18 +48,18 @@ class Temperature extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
-            this.setState({tempReading: res.data.currentFurnaceTemperatureCelcius})
-            if(res.data.criticalFurnaceTemperature) {
-                if(!this.state.tempModalIsOpen) {
-                    if(!this.state.tempNoted) {
-                        this.setState({ tempModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ tempModalIsOpen: false, tempNoted: false });
-            }
-        }) , 2000)
+        // setInterval(() => axios.get('/getCurrentFurnaceTemperature').then(res => {
+        //     this.setState({tempReading: res.data.currentFurnaceTemperatureCelcius})
+        //     if(res.data.criticalFurnaceTemperature) {
+        //         if(!this.state.tempModalIsOpen) {
+        //             if(!this.state.tempNoted) {
+        //                 this.setState({ tempModalIsOpen: true});
+        //             }
+        //         }
+        //     } else {
+        //         this.setState({ tempModalIsOpen: false, tempNoted: false });
+        //     }
+        // }) , 2000)
     }
 
     render() {

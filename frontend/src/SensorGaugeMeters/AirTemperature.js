@@ -49,20 +49,20 @@ class AirTemperature extends Component {
 
 
     componentDidMount() {
-        setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({
-                currentTemperature: res.data.currentTemperature
-            });
-            if(res.data.criticalSmoke) {
-                if(!this.state.airTemperatureModalIsOpen) {
-                    if(!this.state.airTemperatureNoted) {
-                        this.setState({ airTemperatureModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ airTemperatureModalIsOpen: false, airTemperatureNoted: false });
-            }
-        }) , 2000)
+        // setInterval(() => axios.get('/getCurrentTemperature').then(res => {
+        //     this.setState({
+        //         currentTemperature: res.data.currentTemperature
+        //     });
+        //     if(res.data.criticalSmoke) {
+        //         if(!this.state.airTemperatureModalIsOpen) {
+        //             if(!this.state.airTemperatureNoted) {
+        //                 this.setState({ airTemperatureModalIsOpen: true});
+        //             }
+        //         }
+        //     } else {
+        //         this.setState({ airTemperatureModalIsOpen: false, airTemperatureNoted: false });
+        //     }
+        // }) , 2000)
     }
 
 

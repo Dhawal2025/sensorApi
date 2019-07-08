@@ -51,18 +51,18 @@ class Sound extends Component {
         const min = 45;
         const max = 55;
         // setInterval(() => this.setState({soundReading: Math.floor(Math.random()*(max-min+1)+min)}) , 2000);
-        setInterval(() => axios.get('/getCurrentsound').then(res => {
-            this.setState({soundReading: res.data.currentSound});
-            if(res.data.criticalSound) {
-                if(!this.state.soundModalIsOpen) {
-                    if(!this.state.soundNoted) {
-                        this.setState({ soundModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ soundModalIsOpen: false, soundNoted: false });
-            }
-        }) , 1000)
+        // setInterval(() => axios.get('/getCurrentsound').then(res => {
+        //     this.setState({soundReading: res.data.currentSound});
+        //     if(res.data.criticalSound) {
+        //         if(!this.state.soundModalIsOpen) {
+        //             if(!this.state.soundNoted) {
+        //                 this.setState({ soundModalIsOpen: true});
+        //             }
+        //         }
+        //     } else {
+        //         this.setState({ soundModalIsOpen: false, soundNoted: false });
+        //     }
+        // }) , 1000)
     }
 
     render() {

@@ -39,6 +39,8 @@ class Pressure extends Component {
             pressureModalIsOpen: false,
             pressureNoted: false
         };
+        console.log(props, "props");
+        
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
     }
@@ -57,7 +59,7 @@ class Pressure extends Component {
         const min = 1;
         const max = 500;
         client.onopen = () => {
-            console.log('WebSocket Client Connected');
+            console.log('Pressure WebSocket Client Connected');
             console.log(window.location);
         };
         client.onmessage = (message) => {

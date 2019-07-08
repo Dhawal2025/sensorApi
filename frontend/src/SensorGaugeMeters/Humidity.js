@@ -53,18 +53,18 @@ class Humidity extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => axios.get('/getCurrentTemperature').then(res => {
-            this.setState({humidityReading: res.data.currentHumidity})
-            if(res.data.criticalHumidity) {
-                if(!this.state.humModalIsOpen) {
-                    if(!this.state.humNoted) {
-                        this.setState({ humModalIsOpen: true});
-                    }
-                }
-            } else {
-                this.setState({ humModalIsOpen: false, humNoted: false });
-            }
-        }) , 2000)
+        // setInterval(() => axios.get('/getCurrentTemperature').then(res => {
+        //     this.setState({humidityReading: res.data.currentHumidity})
+        //     if(res.data.criticalHumidity) {
+        //         if(!this.state.humModalIsOpen) {
+        //             if(!this.state.humNoted) {
+        //                 this.setState({ humModalIsOpen: true});
+        //             }
+        //         }
+        //     } else {
+        //         this.setState({ humModalIsOpen: false, humNoted: false });
+        //     }
+        // }) , 2000)
     }
 
     render() {
