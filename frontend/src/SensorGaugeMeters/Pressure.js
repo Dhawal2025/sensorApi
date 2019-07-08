@@ -5,7 +5,10 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
-const client = new W3CWebSocket('wss://sensorapiturings.herokuapp.com?connectionType=client');
+const location = window.location.host;
+console.log(window.location.protocol);
+
+const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -55,10 +58,13 @@ class Pressure extends Component {
         const max = 500;
         client.onopen = () => {
             console.log('WebSocket Client Connected');
+            console.log(window.location);
         };
         client.onmessage = (message) => {
             const json = JSON.parse(message.data);
             if(json.sensorType == constants.sensorType.PRESSURE) {
+                console.log(window.location.href);
+                
                 console.log(json.data.currentPressure);
                 this.setState({
                     pressureReading: json.data.currentPressure
