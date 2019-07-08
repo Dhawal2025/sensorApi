@@ -1,6 +1,7 @@
 var pressureStore = require("./sensorsStore/pressure-sensor.js")
 var soundStore = require("./sensorsStore/sound-sensor.js")
 var temperatureStore = require("./sensorsStore/temperature-sensor.js")
+var airStore = require("./sensorsStore/air-sensor.js")
 const constants = require('./projectConstants.js')
 
 var updateMessage = {
@@ -39,6 +40,17 @@ function updateTemperature(sensorIndex, currentTemperature) {
     return updateMessage;
 }
 
+function updateAirTemperature(sensorIndex, currentAirTemperature, currentHumidity) {
+    airStore.setCurrentAirTemperature(sensorIndex, currentAirTemperature, currentHumidity)
+    updateMessage.data = airStore.getCurrentAirTemperature(sensorIndex);
+    if(updateMessage.data == false)
+        return false;
+    updateMessage.sensorType = constants.sensorType.AIR;
+    updateMessage.sensorIndex = sensorIndex;
+    return updateMessage;
+}
+
 module.exports.updatePressure = updatePressure;
 module.exports.updateSound = updateSound;
 module.exports.updateTemperature = updateTemperature;
+module.exports.updateAirTemperature = updateAirTemperature;

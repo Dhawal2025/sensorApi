@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 var sensorState = require("./sensorState.js");
 const constants = require('./projectConstants.js')
-// server.listen(webSocketsServerPort);
+
 const wsServer = new webSocketServer({
   httpServer: server,
   path: "/echo"
@@ -44,9 +44,7 @@ wsServer.on('request', function(request) {
     console.log(connectionType);
     if(connectionType == connections.CLIENT) {
         clients[userId] = connection;
-        // clients[userId].send('HELLO CLIENT');
     } else {
-
         sensors[userId] = connection;
         sensors[userId].on('message', function(message) {
             const dataFromClient = JSON.parse(message.utf8Data);
@@ -60,6 +58,9 @@ wsServer.on('request', function(request) {
                 break;
                 case constants.sensorType.TEMPERATURE:
                     updateMessage = sensorState.updateTemperature(dataFromClient.sensorIndex, dataFromClient.currentTemperature)
+                break;
+                case constants.sensorType.AIR:
+                    updateMessage = sensorState.updateAirTemperature(dataFromClient.sensorIndex, dataFromClient.currentAirTemperature, dataFromClient.currentHumidity)
                 break;
             }
             if(!updateMessage) {
@@ -82,6 +83,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
 })
 
-server.listen(process.env.PORT || 5000, () => {
+server.listen(5000, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });
