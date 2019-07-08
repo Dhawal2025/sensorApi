@@ -68,7 +68,7 @@ class App extends Component {
           </SplitPane>
         </div>
         <div>
-          <SplitPane split="vertical" defaultSize="60%" paneStyle={{background: "#282a36"}}>
+          <SplitPane split="vertical" defaultSize="65%" paneStyle={{background: "#282a36"}}>
           <SplitPane split="vertical" defaultSize="50%">
           <div style={styles.center}>
           <h1 style={{color: "white"}} >
