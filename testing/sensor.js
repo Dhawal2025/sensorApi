@@ -37,4 +37,4 @@ client.on('connect', function(connection) {
     sendNumber();
 });
  
-client.connect('ws://127.0.0.1:5000?connectionType=sensor');
+client.connect('ws://sensorapiturings.herokuapp.com?connectionType=sensor');
