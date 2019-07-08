@@ -49,7 +49,7 @@ class App extends Component {
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
-            <div style={{color: 'white', fontSize: window.innerWidth > 1000 ? 50 : 20}}>Humidity {window.innerWidth > 1000 ? 50 : 100} </div>
+            <h1 style={{color: 'white'}}>Humidity </h1>
             <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
             <h1 style={{color: 'white'}}>Air Temp </h1>
           </div>
