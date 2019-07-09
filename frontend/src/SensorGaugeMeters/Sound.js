@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 const location = window.location.host;
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -58,14 +58,14 @@ class Sound extends Component {
             };
             client.onmessage = (message) => {
                const json = JSON.parse(message.data);
-                console.log(json, "TEMP JSON");
+                console.log(json, "Sound JSON");
                 
                 if(json.sensorType == this.props.sensorType) {
                     console.log(window.location.href);
                     
-                    console.log(json.data.soundReading);
+                    console.log(json.data.currentSound);
                     this.setState({
-                        soundReading: json.data.soundReading
+                        soundReading: json.data.currentSound
                     }) 
                 }
             };
@@ -79,7 +79,7 @@ class Sound extends Component {
         return(
             <div>
                 <ReactSpeedometer
-                    maxValue={100}
+                    maxValue={2500}
                     value={this.state.soundReading}
                     needleColor="#aac4cf"
                     startColor="#348498"
