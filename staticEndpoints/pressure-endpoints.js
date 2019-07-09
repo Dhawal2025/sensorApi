@@ -5,4 +5,9 @@ module.exports = function(app){
         console.log(pressureStore.getPressureThreshold(req.query.sensorIndex))
         res.send(true);
     });
+
+    app.get('/addPressureSensor', function(req, res) {
+        pressureStore.addSensor();
+        res.send(true)
+    })
 }

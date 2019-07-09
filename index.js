@@ -39,7 +39,7 @@ function broadcastMessage(data) {
         clients[client].sendUTF(data);
     });
 }
-
+var currentXs = [[]]
 wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
     var connectionType = request.resourceURL.query.connectionType
@@ -65,9 +65,23 @@ wsServer.on('request', function(request) {
                 case constants.sensorType.AIR:
                     updateMessage = sensorState.updateAirTemperature(dataFromClient.sensorIndex, dataFromClient.currentAirTemperature, dataFromClient.currentHumidity)
                 break;
+                case constants.sensorType.VIBRATION:
+                    console.log(dataFromClient.sensorType)
+                    
+                    console.log(dataFromClient.hundredReceived)    
+                    if(dataFromClient.hundredReceived) {
+                        updateMessage = sensorState.updateVibration(dataFromClient.sensorIndex, currentXs[dataFromClient.sensorIndex - 1]); 
+                        console.log(currentXs[dataFromClient.sensorIndex - 1])
+                        currentXs[dataFromClient.sensorIndex - 1] = []       
+                    } else {
+                        console.log(dataFromClient.currentX)
+                        console.log(currentXs)
+                        currentXs[dataFromClient.sensorIndex - 1].push(dataFromClient.currentX)
+                    }
+                break;
             }
             if(!updateMessage) {
-                console.log("Invalid Data")
+                console.log("No Message to Update or Invalid Data")
             } else {
                 broadcastMessage(JSON.stringify(updateMessage))
             }

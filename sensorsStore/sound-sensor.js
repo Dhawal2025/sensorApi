@@ -3,7 +3,9 @@ var soundThresholds = []
 var sensorCount = 1;
 currentSounds.push({
     currentSound: -1,
-    soundCritical: false
+    soundCritical: false,
+    soundUpperLimit: 65,
+    soundLowerLimit: 35
 })
 soundThresholds.push({
     soundThreshold: 10,
@@ -20,8 +22,15 @@ function getCurrentSound(sensorIndex) {
 
 function addSensor() {
     currentSounds.push({
-        currentSound: -1
-    });
+        currentSound: -1,
+        soundCritical: false,
+        soundUpperLimit: 65,
+        soundLowerLimit: 35
+    })
+
+    soundThresholds.push({
+        soundThreshold: 10,
+    })
     sensorCount++;
 }
 

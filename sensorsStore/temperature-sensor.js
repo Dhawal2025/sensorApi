@@ -3,7 +3,9 @@ var temperatureThresholds = []
 var sensorCount = 1;
 currentTemperatures.push({
     currentTemperature: -1,
-    temperatureCritical: false
+    temperatureCritical: false,
+    temperatureUpperLimit: 500,
+    temperatureLowerLimit: 100
 })
 temperatureThresholds.push({
     temperatureThreshold: 10,
@@ -20,8 +22,14 @@ function getCurrentTemperature(sensorIndex) {
 
 function addSensor() {
     currentTemperatures.push({
-        currentTemperature: -1
+        currentTemperature: -1,
+        temperatureCritical: false,
+        temperatureUpperLimit: 500,
+        temperatureLowerLimit: 100
     });
+    temperatureThresholds.push({
+        temperatureThreshold: 10,
+    })
     sensorCount++;
 }
 
