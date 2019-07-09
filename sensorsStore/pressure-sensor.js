@@ -23,7 +23,7 @@ function getCurrentPressure(sensorIndex) {
 
 function addSensor() {
     currentPressures.push({
-        currentPressures: -1,
+        currentPressure: -1,
         currentPressureComparer: -1,
         pressureThreshold: 10,
     });

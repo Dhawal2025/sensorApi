@@ -27,9 +27,14 @@ client.on('connect', function(connection) {
         if (connection.connected) {
             var number = 5 + Math.round(Math.random() * 10);
             connection.sendUTF(JSON.stringify({
-                currentPressure: 9,
+                currentPressure: 95000,
                 sensorType: constants.sensorType.PRESSURE,
                 sensorIndex: 1
+            }));
+            connection.sendUTF(JSON.stringify({
+                currentPressure: 99000,
+                sensorType: constants.sensorType.PRESSURE,
+                sensorIndex: 2
             }));
             setTimeout(sendNumber, 1000);
         }

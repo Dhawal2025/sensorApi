@@ -45,9 +45,10 @@ class App extends Component {
     // }
 
     return (
+      <SplitPane split="horizontal" defaultSize="7%" paneStyle={{background: "#348498"}}>
+      <Nav />
       <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
-          <Nav />
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
@@ -92,6 +93,7 @@ class App extends Component {
           </div>
           </SplitPane>
         </div>
+      </SplitPane>
       </SplitPane>
     );
   }
