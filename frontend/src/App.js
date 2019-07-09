@@ -11,6 +11,7 @@ import AirTemperature from './SensorGaugeMeters/AirTemperature';
 import AirQuality from './SensorGaugeMeters/AirQuality';
 import Sound from './SensorGaugeMeters/Sound';
 import constants from "../../projectConstants.js"
+import Nav from './Components/Nav';
 
 class App extends Component {
   render() {
@@ -46,6 +47,7 @@ class App extends Component {
     return (
       <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
+          <Nav />
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
