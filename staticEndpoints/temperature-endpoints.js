@@ -5,4 +5,9 @@ module.exports = function(app){
         console.log(temperatureStore.getTemperatureThreshold(req.query.sensorIndex))
         res.send(true);
     });
+
+    app.get('/addTemperatureSensor', function(req, res) {
+        temperatureStore.addSensor();
+        res.send(true)
+    })
 }
