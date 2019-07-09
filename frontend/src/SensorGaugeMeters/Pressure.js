@@ -5,6 +5,9 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+
 const location = window.location.host;
 const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
@@ -25,7 +28,8 @@ const customStyles = {
         bottom: 'auto',
         width: '25%',
         height: '25%'
-    }
+    },
+    
 };
 
 class Pressure extends Component {
@@ -95,6 +99,18 @@ class Pressure extends Component {
     render() {
         return(
             <div>
+                <IconButton
+                    aria-label="More"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    style={{marginLeft: "-40%"}}
+                    // onClick={handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <h1 style={{color: "white", marginLeft: "10%"}} >
+                    Pressure Sensor
+                </h1>
                 <ReactSpeedometer
                     maxValue={110000}
                     minValue={90000}

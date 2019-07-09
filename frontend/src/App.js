@@ -71,9 +71,7 @@ class App extends Component {
           <SplitPane split="vertical" defaultSize="65%" paneStyle={{background: "#282a36"}}>
           <SplitPane split="vertical" defaultSize="50%">
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-            Pressure Sensor
-          </h1>
+          
             <Pressure sensorType={constants.sensorType.PRESSURE} />
           </div>
           <div style={styles.center}>
