@@ -30,15 +30,25 @@ function setCurrentTemperature(sensorIndex, currentTemperature) {
         return false;
     } else {
         currentTemperatures[sensorIndex - 1].currentTemperature = currentTemperature;
-        if(currentTemperatures[sensorIndex - 1],currentTemperature > temperatureThresholds[sensorIndex - 1].temperatureThreshold)
+        if(currentTemperatures[sensorIndex - 1].currentTemperature > temperatureThresholds[sensorIndex - 1].temperatureThreshold)
             currentTemperatures[sensorIndex - 1].temperatureCritical = true;
         else
             currentTemperatures[sensorIndex - 1].temperatureCritical = false;
     }
 }
 
+function setTemperatureThreshold(sensorIndex, newTemperatureThreshold) {
+    temperatureThresholds[sensorIndex - 1].temperatureThreshold = newTemperatureThreshold;
+}
+
+function getTemperatureThreshold(sensorIndex) {
+    return temperatureThresholds[sensorIndex - 1].temperatureThreshold;
+}
+
 module.exports = {
     getCurrentTemperature,
     setCurrentTemperature,
-    addSensor
+    addSensor,
+    setTemperatureThreshold,
+    getTemperatureThreshold
 }

@@ -10,8 +10,8 @@ var updateMessage = {
     data: {}
 }
 
-function updatePressure(sensorIndex, currentPressure) {
-    pressureStore.setCurrentPressure(sensorIndex, currentPressure)
+function updatePressure(sensorIndex, currentPressure, currentPressureComparer) {
+    pressureStore.setCurrentPressure(sensorIndex, currentPressure, currentPressureComparer)
     updateMessage.data = pressureStore.getCurrentPressure(sensorIndex);
     if(updateMessage.data == false)
         return false;

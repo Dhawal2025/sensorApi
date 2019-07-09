@@ -5,6 +5,9 @@ const http = require('http');
 
 const express = require('express')
 const app = express();
+
+require('./staticEndpoints/pressure-endpoints.js')(app);
+require('./staticEndpoints/temperature-endpoints.js')(app);
 const path = require('path');
 
 const server = http.createServer(app);
@@ -51,7 +54,7 @@ wsServer.on('request', function(request) {
             var updateMessage
             switch(dataFromClient.sensorType) {
                 case constants.sensorType.PRESSURE:
-                    updateMessage = sensorState.updatePressure(dataFromClient.sensorIndex, dataFromClient.currentPressure)
+                    updateMessage = sensorState.updatePressure(dataFromClient.sensorIndex, dataFromClient.currentPressure, dataFromClient.currentPressureComparer)
                 break;
                 case constants.sensorType.SOUND:
                     updateMessage = sensorState.updateSound(dataFromClient.sensorIndex, dataFromClient.currentSound)
@@ -83,6 +86,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
 })
 
-server.listen(5000, () => {
+server.listen(process.env.PORT || 5000, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });

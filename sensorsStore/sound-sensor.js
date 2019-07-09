@@ -30,7 +30,7 @@ function setCurrentSound(sensorIndex, currentSound) {
         return false;
     } else {
         currentSounds[sensorIndex - 1].currentSound = currentSound;
-        if(currentSounds[sensorIndex - 1],currentSound > soundThresholds[sensorIndex - 1].soundThreshold)
+        if(currentSounds[sensorIndex - 1].currentSound > soundThresholds[sensorIndex - 1].soundThreshold)
             currentSounds[sensorIndex - 1].soundCritical = true;
         else
             currentSounds[sensorIndex - 1].soundCritical = false;

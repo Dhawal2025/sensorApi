@@ -49,7 +49,7 @@ class Pressure extends Component {
     }
     
     malfunctionCloseModal = () => {
-        this.setState({differenceIncreased: false});
+        this.setState({differenceIncreased: false, differenceIncreasedNoted: true});
     }
 
     pressureCloseModal() {
@@ -67,9 +67,7 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                    console.log(json, "PRESSURE");
-                    console.log(this.state, "STATE");
-                             
+                                    
                    if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         pressureReading: json.data.currentPressure,
@@ -83,6 +81,10 @@ class Pressure extends Component {
                     if(this.state.storeIndexes.length == 1) {
                         this.setState({selectedIndex: this.state.storeIndexes[0]});
                     }
+                    if (!this.state.differenceIncreased && this.state.differenceIncreasedNoted) {
+                        this.setState({differenceIncreasedNoted: false});
+                    }
+                    console.log(this.state.differenceIncreasedNoted, "DIfference Increased Noted");
                 }
             };
         } catch(error) {
@@ -118,7 +120,7 @@ class Pressure extends Component {
                 </div>
                 <div>
                     <Modal
-                    isOpen={this.state.differenceIncreased}
+                    isOpen={this.state.differenceIncreased && !this.state.differenceIncreasedNoted}
                     onAfterOpen={this.afterOpenModal}
                     style={customStyles}
                     contentLabel="Difference Increased"
