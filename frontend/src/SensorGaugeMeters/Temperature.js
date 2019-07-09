@@ -6,7 +6,7 @@ import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
 const location = window.location.host;
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {

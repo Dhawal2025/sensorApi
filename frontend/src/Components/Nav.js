@@ -37,12 +37,12 @@ class Nav extends React.Component {
     
 
     return (
-      <div className="nav_root">
-        <AppBar position="static" className="nav_color">
+      <div className="nav_root" style={{background: "black"}} >
+        <AppBar position="static" className="" style={{background: "#348498"}}>
           <Toolbar>
             {drawerButton}
-            <Typography variant="title" color="inherit" className="flex">
-              &nbsp;&nbsp;Block Dust
+            <Typography variant="title" >
+              {/* &nbsp;&nbsp;Block Dust */}
             </Typography>
             {button}
           </Toolbar>

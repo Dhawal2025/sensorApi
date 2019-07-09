@@ -44,9 +44,10 @@ class Dashboard extends Component {
     // }
 
     return (
+      <SplitPane split="horizontal" defaultSize="7%" paneStyle={{background: "#348498"}}>
+      <Nav />
       <SplitPane split="horizontal" defaultSize="50%" paneStyle={{background: "#282a36"}}>
         <div>
-          <Nav />
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
@@ -72,9 +73,7 @@ class Dashboard extends Component {
           <SplitPane split="vertical" defaultSize="65%" paneStyle={{background: "#282a36"}}>
           <SplitPane split="vertical" defaultSize="50%">
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-            Pressure Sensor
-          </h1>
+          
             <Pressure sensorType={constants.sensorType.PRESSURE} />
           </div>
           <div style={styles.center}>
@@ -93,6 +92,7 @@ class Dashboard extends Component {
           </div>
           </SplitPane>
         </div>
+      </SplitPane>
       </SplitPane>
     );
   }

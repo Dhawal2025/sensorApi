@@ -5,6 +5,11 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import constants from "../../../projectConstants.js"
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 const location = window.location.host;
 const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
 
@@ -25,8 +30,11 @@ const customStyles = {
         bottom: 'auto',
         width: '25%',
         height: '25%'
-    }
+    },
+    
 };
+const ITEM_HEIGHT = 48;
+
 
 class Pressure extends Component {
 
@@ -37,7 +45,11 @@ class Pressure extends Component {
             pressureModalIsOpen: false,
             pressureNoted: false,
             differenceIncreased: false,
-            differenceIncreasedNoted: false
+            storeIndexes: [],
+            selectedIndex: -1,
+            anchorEl: null,
+            setAnchorEl: null,
+            open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.pressureCloseModal = this.pressureCloseModal.bind(this);
@@ -56,6 +68,22 @@ class Pressure extends Component {
         this.setState({pressureModalIsOpen: false, pressureNoted: true});
         axios.get('/turnOffAlarm').then(res => console.log(res))
     }
+    
+    
+      handleClick = (event) => {
+        this.setState({anchorEl: event.currentTarget});
+        this.setState({open: true});
+      }
+    
+     handleClose = () => {
+        this.setState({anchorEl: null});
+        this.setState({open: false});
+      }
+
+      handleMenuItemClick = (event, option) => {
+          console.log(option, "option");
+          this.setState({selectedIndex: option, open: false});
+      }
 
     componentDidMount() {
         try {
@@ -66,12 +94,20 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                    console.log(window.location.href);
-                    console.log(json.data.currentPressure);
+                                    
+                   if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         pressureReading: json.data.currentPressure,
-                        differenceIncreased: json.data.differenceIncreased,
-                    });
+                        differenceIncreased: json.data.differenceIncreased
+                    }) 
+                   }
+                   else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
+                        const list = [...this.state.storeIndexes, json.sensorIndex];
+                        this.setState({storeIndexes: list});
+                    }
+                    if(this.state.storeIndexes.length == 1) {
+                        this.setState({selectedIndex: this.state.storeIndexes[0]});
+                    }
                     if (!this.state.differenceIncreased && this.state.differenceIncreasedNoted) {
                         this.setState({differenceIncreasedNoted: false});
                     }
@@ -84,8 +120,40 @@ class Pressure extends Component {
     }
 
     render() {
+        
         return(
             <div>
+                <IconButton
+                    aria-label="More"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    style={{marginLeft: "-40%"}}
+                    onClick={this.handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: 200,
+                    },
+                    }}
+                >
+                    {this.state.storeIndexes.map(option => (
+                    <MenuItem key={option} selected={option === this.state.selectedIndex} onClick={event => this.handleMenuItemClick(event, option)}>
+                        Sensor {option}
+                    </MenuItem>
+                    ))}
+                </Menu>
+                <h1 style={{color: "white", marginLeft: "10%"}} >
+                    Pressure Sensor
+                </h1>
                 <ReactSpeedometer
                     maxValue={110000}
                     minValue={90000}
