@@ -43,13 +43,11 @@ class Vibrations extends Component {
                     var temp = [];
                     for (var obj in serverData) {
                         if (parseInt(obj) + 1 > this.state.maxX) this.setState({ maxX: parseInt(obj) + 2 });
-                        if (serverData[obj] > this.state.maxY) this.setState({ maxY: serverData[obj] + 1 });
                         console.log(obj);
                         const tempDict = {x0: parseInt(obj), x: parseFloat(obj) + 0.9, y: serverData[obj]};
                         console.log(tempDict);
                         temp.push(tempDict);
-                        console.log(temp[temp.length - 1]);
-                                         
+                        console.log(temp[temp.length - 1]);          
                     }
                     console.log(temp, "TEMP");
                     
@@ -70,10 +68,10 @@ class Vibrations extends Component {
                     console.log(json, "Vibrations JSON");
                     console.log(json.data.currentVibration);
                     const serverData = json.data.currentVibration;
+                    this.setState({maxY: Math.max(...serverData)});
                     const temp = [];
                     for (const obj in serverData) {
                         if (parseInt(obj) + 1 > this.state.maxX) this.setState({ maxX: parseInt(obj) + 2 });
-                        if (serverData[obj] > this.state.maxY) this.setState({ maxY: serverData[obj] });
                         const tempDict = {x0: obj, x: parseFloat(obj) + 0.9 , y: serverData[obj]};
                         temp.push(tempDict);                 
                     }
