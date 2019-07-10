@@ -144,8 +144,8 @@ class Sound extends Component {
                     </MenuItem>
                     ))}
                 </Menu>
-                <h1 style={{color: "white", marginLeft: "30%"}} >
-                    Sound
+                <h1 style={{color: "white", marginLeft: "20%"}} >
+                    Sound(Analog)
                 </h1>
                 <ReactSpeedometer
                     maxValue={2500}
