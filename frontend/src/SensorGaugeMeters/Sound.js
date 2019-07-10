@@ -4,8 +4,12 @@ import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 const location = window.location.host;
-const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -27,6 +31,8 @@ const customStyles = {
     }
 };
 
+const ITEM_HEIGHT = 48;
+
 class Sound extends Component {
 
     constructor(props) {
@@ -34,7 +40,12 @@ class Sound extends Component {
         this.state = { 
             soundReading: 0,
             soundModalIsOpen: false,
-            soundNoted: false
+            soundNoted: false,
+            storeIndexes: [],
+            selectedIndex: -1,
+            anchorEl: null,
+            setAnchorEl: null,
+            open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.soundCloseModal = this.soundCloseModal.bind(this);
@@ -63,10 +74,22 @@ class Sound extends Component {
                 if(json.sensorType == this.props.sensorType) {
                     console.log(window.location.href);
                     
-                    console.log(json.data.currentSound);
-                    this.setState({
-                        soundReading: json.data.currentSound
-                    }) 
+                    // console.log(json.data.currentSound);
+                    // this.setState({
+                    //     soundReading: json.data.currentSound
+                    // }) 
+                    if (json.sensorIndex == this.state.selectedIndex) {
+                        this.setState({
+                            soundReading: json.data.currentSound,
+                        }) 
+                       }
+                       else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
+                            const list = [...this.state.storeIndexes, json.sensorIndex];
+                            this.setState({storeIndexes: list});
+                        }
+                        if(this.state.storeIndexes.length == 1) {
+                            this.setState({selectedIndex: this.state.storeIndexes[0]});
+                        }
                 }
             };
         } catch(error) {
@@ -75,9 +98,55 @@ class Sound extends Component {
         }
     }
 
+    handleClick = (event) => {
+        this.setState({anchorEl: event.currentTarget});
+        this.setState({open: true});
+      }
+    
+     handleClose = () => {
+        this.setState({anchorEl: null});
+        this.setState({open: false});
+      }
+
+      handleMenuItemClick = (event, option) => {
+          console.log(option, "option");
+          this.setState({selectedIndex: option, open: false});
+      }
+
     render() {
         return(
             <div>
+                <IconButton
+                    aria-label="More"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    style={{marginLeft: "-65%"}}
+                    onClick={this.handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: 200,
+                    },
+                    }}
+                >
+                    {this.state.storeIndexes.map(option => (
+                    <MenuItem key={option} selected={option === this.state.selectedIndex} onClick={event => this.handleMenuItemClick(event, option)}>
+                        Sensor {option}
+                    </MenuItem>
+                    ))}
+                </Menu>
+                <h1 style={{color: "white", marginLeft: "30%"}} >
+                    Sound
+                </h1>
                 <ReactSpeedometer
                     maxValue={2500}
                     value={this.state.soundReading}
@@ -86,7 +155,7 @@ class Sound extends Component {
                     needleColor = "#004d61"
                     segments={1}
                     needleHeightRatio={0.6}
-                    height={180}
+                    height={300}
                     needleTransition="easeElastic"
                     needleTransitionDuration={4000}
                     ringWidth={100}
