@@ -62,9 +62,6 @@ class Dashboard extends Component {
           </div>
           </div>
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-          Furnace Temperature Sensor
-          </h1>
             <Temperature sensorType={constants.sensorType.TEMPERATURE}  />
           </div>
           </SplitPane>
@@ -77,17 +74,11 @@ class Dashboard extends Component {
             <Pressure sensorType={constants.sensorType.PRESSURE} />
           </div>
           <div style={styles.center}>
-            <h1 style={{color: "white"}} >
-              Sound Sensor
-            </h1>
             <Sound sensorType={constants.sensorType.SOUND} />
           </div>
           </SplitPane>
           
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-            Vibrations Sensor
-          </h1>
             <Vibrations sensorType={constants.sensorType.VIBRATION}  />
           </div>
           </SplitPane>

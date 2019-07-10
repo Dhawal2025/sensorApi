@@ -8,6 +8,7 @@ const app = express();
 
 require('./staticEndpoints/pressure-endpoints.js')(app);
 require('./staticEndpoints/temperature-endpoints.js')(app);
+require('./staticEndpoints/sound-endpoints.js')(app);
 const path = require('path');
 
 const server = http.createServer(app);

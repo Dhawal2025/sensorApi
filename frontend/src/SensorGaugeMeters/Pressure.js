@@ -94,7 +94,7 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                                    
+                 
                    if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         pressureReading: json.data.currentPressure,
@@ -127,7 +127,7 @@ class Pressure extends Component {
                     aria-label="More"
                     aria-controls="long-menu"
                     aria-haspopup="true"
-                    style={{marginLeft: "-40%"}}
+                    style={{marginLeft: "-65%"}}
                     onClick={this.handleClick}
                 >
                     <MoreVertIcon />
@@ -151,8 +151,8 @@ class Pressure extends Component {
                     </MenuItem>
                     ))}
                 </Menu>
-                <h1 style={{color: "white", marginLeft: "10%"}} >
-                    Pressure Sensor
+                <h1 style={{color: "white", marginLeft: "30%"}} >
+                    Pressure
                 </h1>
                 <ReactSpeedometer
                     maxValue={110000}
@@ -162,7 +162,7 @@ class Pressure extends Component {
                     startColor="#7b88ff"
                     endColor="#49beb7"
                     segments={5}
-                    height={180}
+                    height={300}
                 />
                 <div>
                     <Modal

@@ -4,9 +4,13 @@ import Modal from 'react-modal';
 import Thermometer from 'react-thermometer-component';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import constants from "../../../projectConstants.js"
+import constants from "../../../projectConstants.js";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 const location = window.location.host;
-const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -28,6 +32,8 @@ const customStyles = {
     }
 };
 
+const ITEM_HEIGHT = 48;
+
 class Temperature extends Component {
 
     constructor(props) {
@@ -35,7 +41,12 @@ class Temperature extends Component {
         this.state = { 
             tempReading: 0,
             tempModalIsOpen: false,
-            tempNoted: false
+            tempNoted: false,
+            storeIndexes: [],
+            selectedIndex: -1,
+            anchorEl: null,
+            setAnchorEl: null,
+            open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.tempCloseModal = this.tempCloseModal.bind(this);
@@ -59,15 +70,28 @@ class Temperature extends Component {
         client.onmessage = (message) => {
            try {
             const json = JSON.parse(message.data);
-            console.log(json, "TEMP JSON");
+            console.log(json, "Furnance TEMP JSON");
             
             if(json.sensorType == this.props.sensorType) {
                 console.log(window.location.href);
+                console.log(this.state.storeIndexes, "Indexes");
                 
-                console.log(json.data.currentTemperature);
-                this.setState({
-                    tempReading: json.data.currentTemperature
+                // console.log(json.data.currentTemperature);
+                // this.setState({
+                //     tempReading: json.data.currentTemperature
+                // }) 
+                if (json.sensorIndex == this.state.selectedIndex) {
+                    this.setState({
+                        tempReading: json.data.currentTemperature,
                 }) 
+                }
+                else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
+                    const list = [...this.state.storeIndexes, json.sensorIndex];
+                    this.setState({storeIndexes: list});
+                }
+                if(this.state.storeIndexes.length == 1) {
+                    this.setState({selectedIndex: this.state.storeIndexes[0]});
+                }
             }
            } catch(error) {
             console.log(error);
@@ -75,9 +99,55 @@ class Temperature extends Component {
         };
     }
 
+    handleClick = (event) => {
+        this.setState({anchorEl: event.currentTarget});
+        this.setState({open: true});
+      }
+    
+     handleClose = () => {
+        this.setState({anchorEl: null});
+        this.setState({open: false});
+      }
+
+      handleMenuItemClick = (event, option) => {
+          console.log(option, "option");
+          this.setState({selectedIndex: option, open: false});
+      }
+
     render() {
         return(
             <div>
+                <IconButton
+                    aria-label="More"
+                    aria-controls="long-menu"
+                    aria-haspopup="true"
+                    style={{marginLeft: "-180%"}}
+                    onClick={this.handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    PaperProps={{
+                    style: {
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: 200,
+                    },
+                    }}
+                >
+                    {this.state.storeIndexes.map(option => (
+                    <MenuItem key={option} selected={option === this.state.selectedIndex} onClick={event => this.handleMenuItemClick(event, option)}>
+                        Sensor {option}
+                    </MenuItem>
+                    ))}
+                </Menu>
+                <h1 style={{color: "white"}}> 
+                    Furnance
+                </h1>
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
@@ -86,7 +156,8 @@ class Temperature extends Component {
                     format="°C"
                     size="large"
                     height="250"
-                    reverseGradient={true}
+                    reverseGradient={false}
+                    style={{marginLeft: "50%"}}
                 />
                 <div>
                     <Modal
