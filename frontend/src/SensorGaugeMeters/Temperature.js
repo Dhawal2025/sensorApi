@@ -24,7 +24,7 @@ const customStyles = {
       },
     content : {
         top: '12.5%',
-        left: '62.5%',
+        left: '71.5%',
         right: 'auto',
         bottom: 'auto',
         width: '25%',
@@ -42,7 +42,7 @@ class Temperature extends Component {
             tempReading: 0,
             tempModalIsOpen: false,
             tempNoted: false,
-            maxTemperature: 50,
+            maxTemperature: 1000,
             storeIndexes: [],
             selectedIndex: -1,
             anchorEl: null,
@@ -50,17 +50,10 @@ class Temperature extends Component {
             open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.tempCloseModal = this.tempCloseModal.bind(this);
     }
     
     afterOpenModal() {
         this.subtitle.style.color = '#000';
-    }
-    
-    tempCloseModal() {
-        console.log("Temperature Close!!")
-        this.setState({tempModalIsOpen: false, tempNoted: true});
-        axios.get('/turnOffAlarm').then(res => console.log(res))
     }
 
     componentDidMount() {
@@ -84,6 +77,7 @@ class Temperature extends Component {
                 if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         tempReading: json.data.currentTemperature,
+                        tempModalIsOpen: json.data.temperatureCritical,
                         maxTemperature: json.data.temperatureUpperLimit
                     }) 
                     if (json.data.currentTemperature > 200) {
@@ -156,11 +150,7 @@ class Temperature extends Component {
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
-<<<<<<< HEAD
                     max={this.state.maxTemperature}
-=======
-                    max="1000"
->>>>>>> a1dd19259d1c61ecdf1adcead0188e0976f47e28
                     steps="3"
                     format="°C"
                     size="large"
@@ -179,7 +169,7 @@ class Temperature extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Furnace Temperature Critical</h2>
                         <hr/>
                         <div>The temperature of the Furnace has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.tempCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
+                        <Button variant="contained" color="primary"  style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
             </div>

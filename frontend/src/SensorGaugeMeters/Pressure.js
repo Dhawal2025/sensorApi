@@ -43,7 +43,6 @@ class Pressure extends Component {
         this.state = { 
             pressureReading: 0,
             pressureModalIsOpen: false,
-            pressureNoted: false,
             differenceIncreased: false,
             storeIndexes: [],
             selectedIndex: -1,
@@ -52,7 +51,6 @@ class Pressure extends Component {
             open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.pressureCloseModal = this.pressureCloseModal.bind(this);
     }
 
     afterOpenModal() {
@@ -62,13 +60,6 @@ class Pressure extends Component {
     malfunctionCloseModal = () => {
         this.setState({differenceIncreased: false, differenceIncreasedNoted: true});
     }
-
-    pressureCloseModal() {
-        console.log("Pressure Close!!");
-        this.setState({pressureModalIsOpen: false, pressureNoted: true});
-        axios.get('/turnOffAlarm').then(res => console.log(res))
-    }
-    
     
       handleClick = (event) => {
         this.setState({anchorEl: event.currentTarget});
@@ -98,10 +89,10 @@ class Pressure extends Component {
                    if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         pressureReading: (json.data.currentPressure)/100000,
-                        differenceIncreased: json.data.differenceIncreased
+                        differenceIncreased: json.data.differenceIncreased,
+                        pressureModalIsOpen: json.data.pressureCritical
                     }) 
-                    if (json.data.currentPressure > 105000) this.setState({pressureModalIsOpen: true});
-                   }
+                }
                    else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
                         const list = [...this.state.storeIndexes, json.sensorIndex];
                         this.setState({storeIndexes: list});
@@ -175,7 +166,7 @@ class Pressure extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Pressure Critical</h2>
                         <hr/>
                         <div>The pressure of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.pressureCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
+                        <Button variant="contained" color="primary"  style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
                 <div>
