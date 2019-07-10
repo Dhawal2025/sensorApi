@@ -51,9 +51,9 @@ class Dashboard extends Component {
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
-            <h1 style={{color: 'white'}}>Humidity </h1>
-            <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
-            <h1 style={{color: 'white'}}>Air Temp </h1>
+            <h1 style={{color: 'white'}}>Humidity(%) </h1>
+            <h1 style={{color: 'white'}}>Air Quality(PPM) </h1>
+            <h1 style={{color: 'white'}}>Air Temp(Celsius) </h1>
           </div>
           <div style={styles.centerRow}>
             <Humidity sensorType={constants.sensorType.AIR}  />

@@ -15,6 +15,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
+import {  Link } from "react-router-dom";
 
 const pinkButton = {
     color: "#000",
@@ -81,7 +82,7 @@ class NavDrawer extends React.Component {
             onKeyDown={this.handleClosing}
           >
             <div>
-
+              <Link to="/" style={{ textDecoration: 'none' }}>
               <ListItem button onClick={this.openProfile}>
                 <ListItemIcon>
                   <Avatar style={greenButton}>
@@ -91,9 +92,10 @@ class NavDrawer extends React.Component {
 
                 <ListItemText primary="Dashboard" />
               </ListItem>
+              </Link>
 
-
-              <ListItem button onClick={this.openAdd}>
+              <Link to="/addSensor" style={{ textDecoration: 'none' }}>
+              <ListItem button>
                 <ListItemIcon>
                   <Avatar style={blueButton}>
                     <AddIcon />
@@ -101,10 +103,11 @@ class NavDrawer extends React.Component {
                 </ListItemIcon>
                 <ListItemText primary="Add Sensor" />
               </ListItem>
+              </Link>
 
               <Divider />
               <Divider />
-
+              <Link to="/settings/" style={{ textDecoration: 'none' }}>
               <ListItem button>
                 <ListItemIcon>
                   <Avatar style={yellowButton}>
@@ -114,7 +117,7 @@ class NavDrawer extends React.Component {
 
                 <ListItemText primary="Settings" />
               </ListItem>
-
+              </Link>
               <ListItem button>
                 <ListItemIcon>
                   <Avatar style={redButton}>

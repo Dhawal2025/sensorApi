@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 const location = window.location.host;
-const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -83,7 +83,10 @@ class Temperature extends Component {
                 if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         tempReading: json.data.currentTemperature,
-                }) 
+                    }) 
+                    if (json.data.currentTemperature > 200) {
+                        this.setState({tempModalIsOpen: true});
+                    }
                 }
                 else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
                     const list = [...this.state.storeIndexes, json.sensorIndex];
@@ -146,18 +149,18 @@ class Temperature extends Component {
                     ))}
                 </Menu>
                 <h1 style={{color: "white"}}> 
-                    Furnance
+                    Furnance<br/>(Celsius)
                 </h1>
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
-                    max="100"
+                    max="1000"
                     steps="3"
                     format="°C"
                     size="large"
                     height="250"
                     reverseGradient={false}
-                    style={{marginLeft: "50%"}}
+                    style={{marginLeft: "90%"}}
                 />
                 <div>
                     <Modal
