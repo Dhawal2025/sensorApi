@@ -22,19 +22,16 @@ client.on('connect', function(connection) {
             console.log("Received: '" + message.utf8Data.value + "'");
         }
     });
-    
+    var number = 0
     function sendNumber() {
+        number++;
+        console.log(number)
         if (connection.connected) {
             var number = 5 + Math.round(Math.random() * 10);
             connection.sendUTF(JSON.stringify({
-                currentPressure: 95000,
-                sensorType: constants.sensorType.PRESSURE,
+                currentTemperature: 200,
+                sensorType: constants.sensorType.TEMPERATURE,
                 sensorIndex: 1
-            }));
-            connection.sendUTF(JSON.stringify({
-                currentPressure: 99000,
-                sensorType: constants.sensorType.PRESSURE,
-                sensorIndex: 2
             }));
             setTimeout(sendNumber, 1000);
         }

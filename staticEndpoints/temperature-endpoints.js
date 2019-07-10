@@ -10,4 +10,17 @@ module.exports = function(app){
         temperatureStore.addSensor();
         res.send(true)
     })
+
+    app.get('/getTemperatureLimits', function(req, res) {
+        res.send(temperatureStore.getTemperatureLimits(1))
+    })
+
+    app.get('/setTemperatureLimits', function(req, res) {
+        console.log("*********/*/*/*******************")
+        console.log(req.query.temperatureUpperLimit)
+        console.log(req.query.temperatureLowerLimit)
+        console.log(req.query.temperatureThreshold)
+        temperatureStore.setTemperatureLimits(1, req.query.temperatureUpperLimit, req.query.temperatureLowerLimit, req.query.temperatureThreshold)
+        res.send(true)
+    })
 }

@@ -35,7 +35,8 @@ class Temperature extends Component {
         this.state = { 
             tempReading: 0,
             tempModalIsOpen: false,
-            tempNoted: false
+            tempNoted: false,
+            maxTemperature: 50
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.tempCloseModal = this.tempCloseModal.bind(this);
@@ -66,7 +67,8 @@ class Temperature extends Component {
                 
                 console.log(json.data.currentTemperature);
                 this.setState({
-                    tempReading: json.data.currentTemperature
+                    tempReading: json.data.currentTemperature,
+                    maxTemperature: json.data.temperatureUpperLimit    
                 }) 
             }
            } catch(error) {
@@ -81,7 +83,7 @@ class Temperature extends Component {
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
-                    max="100"
+                    max={this.state.maxTemperature}
                     steps="3"
                     format="°C"
                     size="large"
