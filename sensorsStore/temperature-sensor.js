@@ -38,6 +38,8 @@ function setCurrentTemperature(sensorIndex, currentTemperature) {
         return false;
     } else {
         currentTemperatures[sensorIndex - 1].currentTemperature = currentTemperature;
+
+        currentTemperatures[sensorIndex - 1].temperatureThreshold = temperatureThresholds[sensorIndex - 1].temperatureThreshold;
         if(currentTemperatures[sensorIndex - 1].currentTemperature > temperatureThresholds[sensorIndex - 1].temperatureThreshold)
             currentTemperatures[sensorIndex - 1].temperatureCritical = true;
         else

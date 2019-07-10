@@ -5,6 +5,12 @@ const sensorType = {
     SOUND: 4,
     AIR: 5
 }
+
+const alarmType = {
+    ALARM: 1,
+    EXHAUST: 2
+}
 module.exports = Object.freeze({
     sensorType: sensorType,
+    alarmType: alarmType
 });

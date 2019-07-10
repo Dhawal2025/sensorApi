@@ -4,11 +4,11 @@ var sensorCount = 1;
 currentSounds.push({
     currentSound: -1,
     soundCritical: false,
-    soundUpperLimit: 65,
-    soundLowerLimit: 35
+    soundUpperLimit: 5000,
+    soundLowerLimit: 0
 })
 soundThresholds.push({
-    soundThreshold: 10,
+    soundThreshold: 1000,
 })
 function getCurrentSound(sensorIndex) {
     
@@ -39,6 +39,8 @@ function setCurrentSound(sensorIndex, currentSound) {
         return false;
     } else {
         currentSounds[sensorIndex - 1].currentSound = currentSound;
+        currentSounds[sensorIndex - 1].soundThreshold =  soundThresholds[sensorIndex - 1].soundThreshold;
+        
         if(currentSounds[sensorIndex - 1].currentSound > soundThresholds[sensorIndex - 1].soundThreshold)
             currentSounds[sensorIndex - 1].soundCritical = true;
         else

@@ -35,11 +35,32 @@ const getUniqueID = () => {
     return s4() + s4() + '-' + s4();
 };
 
-function broadcastMessage(data) {
+function broadcastMessageToClients(data) {
     Object.keys(clients).map((client) => {
         clients[client].sendUTF(data);
     });
 }
+
+function broadcastAlarm(updateMessage) {
+    Object.keys(sensors).map((sensor) => {
+        sensors[sensor].send(JSON.stringify({
+            device: constants.alarmType.ALARM,
+            status: 1,
+            sensor: updateMessage.sensorType
+        }));
+    });
+}
+
+function broadcastExhaust(updateMessage) {
+    Object.keys(sensors).map((sensor) => {
+        sensors[sensor].sendUTF(JSON.stringify({
+            device: constants.alarmType.EXHAUST,
+            status: 1,
+            sensor: updateMessage.sensorType
+        }));
+    });
+}
+
 var currentXs = [[]]
 wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
@@ -48,6 +69,7 @@ wsServer.on('request', function(request) {
     console.log(connectionType);
     if(connectionType == connections.CLIENT) {
         clients[userId] = connection;
+        
     } else {
         sensors[userId] = connection;
         sensors[userId].on('message', function(message) {
@@ -56,6 +78,13 @@ wsServer.on('request', function(request) {
             switch(dataFromClient.sensorType) {
                 case constants.sensorType.PRESSURE:
                     updateMessage = sensorState.updatePressure(dataFromClient.sensorIndex, dataFromClient.currentPressure, dataFromClient.currentPressureComparer)
+                    if(updateMessage) {
+                        console.log("critical")
+                        console.log(updateMessage.data.pressureCritical)
+                        if(updateMessage.data.pressureCritical) {
+                            broadcastAlarm(updateMessage)
+                        }
+                    }
                 break;
                 case constants.sensorType.SOUND:
                     updateMessage = sensorState.updateSound(dataFromClient.sensorIndex, dataFromClient.currentSound)
@@ -64,7 +93,7 @@ wsServer.on('request', function(request) {
                     updateMessage = sensorState.updateTemperature(dataFromClient.sensorIndex, dataFromClient.currentTemperature)
                 break;
                 case constants.sensorType.AIR:
-                    updateMessage = sensorState.updateAirTemperature(dataFromClient.sensorIndex, dataFromClient.currentAirTemperature, dataFromClient.currentHumidity)
+                    updateMessage = sensorState.updateAirTemperature(dataFromClient.sensorIndex, dataFromClient.currentAirTemperature, dataFromClient.currentHumidity, dataFromClient.currentLPG, dataFromClient.currentMethane, dataFromClient.currentCO2, dataFromClient.currentSmoke)
                 break;
                 case constants.sensorType.VIBRATION:
                     console.log(dataFromClient.sensorType)
@@ -84,7 +113,7 @@ wsServer.on('request', function(request) {
             if(!updateMessage) {
                 console.log("No Message to Update or Invalid Data")
             } else {
-                broadcastMessage(JSON.stringify(updateMessage))
+                broadcastMessageToClients(JSON.stringify(updateMessage))
             }
         });
     }

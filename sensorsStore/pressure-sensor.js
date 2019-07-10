@@ -6,12 +6,12 @@ currentPressures.push({
     currentPressureComparer: -1,
     pressureCritical: false,
     differenceIncreased: false,
-    pressureUpperLimit: 150000,
-    pressureLowerLimit: 5000
+    pressureUpperLimit: 0,
+    pressureLowerLimit: 2
 })
 pressureThresholds.push({
-    pressureThreshold: 10,
-    pressureDifferenceThreshold: 5000
+    pressureThreshold: 1.05,
+    pressureDifferenceThreshold: 0.25
 })
 function getCurrentPressure(sensorIndex) {
     if(sensorCount < sensorIndex - 1) {
@@ -25,11 +25,11 @@ function addSensor() {
     currentPressures.push({
         currentPressure: -1,
         currentPressureComparer: -1,
-        pressureThreshold: 10,
+        pressureThreshold: 1.05,
     });
     pressureThresholds.push({
-        pressureThreshold: 10,
-        pressureDifferenceThreshold: 5000
+        pressureThreshold: 1.05,
+        pressureDifferenceThreshold: 0.25
     })
     sensorCount++;
 }
@@ -38,8 +38,10 @@ function setCurrentPressure(sensorIndex, currentPressure, currentPressureCompare
     if(sensorCount < sensorIndex - 1) {
         return false;
     } else {
-        currentPressures[sensorIndex - 1].currentPressure = currentPressure;
-        currentPressures[sensorIndex - 1].currentPressureComparer = currentPressureComparer
+        currentPressures[sensorIndex - 1].currentPressure = currentPressure / 100000;
+        currentPressures[sensorIndex - 1].currentPressureComparer = currentPressureComparer / 100000
+        currentPressures[sensorIndex - 1].pressureThreshold = pressureThresholds[sensorIndex - 1].pressureThreshold
+        
         if(currentPressures[sensorIndex - 1].currentPressure > pressureThresholds[sensorIndex - 1].pressureThreshold)
             currentPressures[sensorIndex - 1].pressureCritical = true;
         else

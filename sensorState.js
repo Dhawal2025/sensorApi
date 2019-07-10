@@ -43,8 +43,8 @@ function updateTemperature(sensorIndex, currentTemperature) {
     return updateMessage;
 }
 
-function updateAirTemperature(sensorIndex, currentAirTemperature, currentHumidity) {
-    airStore.setCurrentAirTemperature(sensorIndex, currentAirTemperature, currentHumidity)
+function updateAirTemperature(sensorIndex, currentAirTemperature, currentHumidity, currentLPG, currentMethane, currentCO2, currentSmoke) {
+    airStore.setCurrentAirTemperature(sensorIndex, currentAirTemperature, currentHumidity, currentLPG, currentMethane, currentCO2, currentSmoke)
     updateMessage.data = airStore.getCurrentAirTemperature(sensorIndex);
     if(updateMessage.data == false)
         return false;
