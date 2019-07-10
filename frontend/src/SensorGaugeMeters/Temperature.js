@@ -41,6 +41,8 @@ class Temperature extends Component {
         this.state = { 
             tempReading: 0,
             tempModalIsOpen: false,
+            tempNoted: false,
+            maxTemperature: 1000,
             storeIndexes: [],
             selectedIndex: -1,
             anchorEl: null,
@@ -75,7 +77,8 @@ class Temperature extends Component {
                 if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
                         tempReading: json.data.currentTemperature,
-                        tempModalIsOpen: json.data.temperatureCritical
+                        tempModalIsOpen: json.data.temperatureCritical,
+                        maxTemperature: json.data.temperatureUpperLimit
                     }) 
                     if (json.data.currentTemperature > 200) {
                         this.setState({tempModalIsOpen: true});
@@ -147,7 +150,7 @@ class Temperature extends Component {
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
-                    max="1000"
+                    max={this.state.maxTemperature}
                     steps="3"
                     format="°C"
                     size="large"

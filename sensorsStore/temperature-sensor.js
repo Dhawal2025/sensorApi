@@ -53,10 +53,27 @@ function getTemperatureThreshold(sensorIndex) {
     return temperatureThresholds[sensorIndex - 1].temperatureThreshold;
 }
 
+function getTemperatureLimits(sensorIndex) {
+    console.log(currentTemperatures[sensorIndex - 1].temperatureLowerLimit)
+    return {
+        upperLimit: currentTemperatures[sensorIndex - 1].temperatureUpperLimit,
+        lowerLimit: currentTemperatures[sensorIndex - 1].temperatureLowerLimit
+    }
+}
+
+function setTemperatureLimits(sensorIndex, temperatureUpperLimit, temperatureLowerLimit, temperatureThreshold) {
+    currentTemperatures[sensorIndex - 1].temperatureUpperLimit = temperatureUpperLimit
+    currentTemperatures[sensorIndex - 1].temperatureLowerLimit = temperatureLowerLimit
+    temperatureThresholds[sensorIndex - 1].temperatureThreshold = temperatureThreshold
+    return true;
+}
+
 module.exports = {
     getCurrentTemperature,
     setCurrentTemperature,
     addSensor,
     setTemperatureThreshold,
-    getTemperatureThreshold
+    getTemperatureThreshold,
+    getTemperatureLimits,
+    setTemperatureLimits
 }

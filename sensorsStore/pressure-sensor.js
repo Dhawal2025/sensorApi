@@ -60,10 +60,28 @@ function getPressureThreshold(sensorIndex) {
     return pressureThresholds[sensorIndex - 1].pressureThreshold;
 }
 
+
+function getPressureLimits(sensorIndex) {
+    console.log(currentPressures[sensorIndex - 1].pressureLowerLimit)
+    return {
+        upperLimit: currentPressures[sensorIndex - 1].pressureUpperLimit,
+        lowerLimit: currentPressures[sensorIndex - 1].pressureLowerLimit
+    }
+}
+
+function setPressureLimits(sensorIndex, pressureUpperLimit, pressureLowerLimit, pressureThreshold) {
+    currentPressures[sensorIndex - 1].pressureUpperLimit = pressureUpperLimit
+    currentPressures[sensorIndex - 1].pressureLowerLimit = pressureLowerLimit
+    pressureThresholds[sensorIndex - 1].pressureThreshold = pressureThreshold
+    return true;
+}
+
 module.exports = {
     getCurrentPressure,
     setCurrentPressure,
     addSensor,
     setPressureThreshold,
-    getPressureThreshold
+    getPressureThreshold,
+    getPressureLimits,
+    setPressureLimits
 }
