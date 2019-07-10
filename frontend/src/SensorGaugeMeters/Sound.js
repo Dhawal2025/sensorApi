@@ -23,7 +23,7 @@ const customStyles = {
       },
     content : {
         top: '62.5%',
-        left: '10.5%',
+        left: '35%',
         right: 'auto',
         bottom: 'auto',
         width: '25%',
@@ -40,7 +40,6 @@ class Sound extends Component {
         this.state = { 
             soundReading: 0,
             soundModalIsOpen: false,
-            soundNoted: false,
             storeIndexes: [],
             selectedIndex: -1,
             anchorEl: null,
@@ -48,19 +47,11 @@ class Sound extends Component {
             open: null
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.soundCloseModal = this.soundCloseModal.bind(this);
     }
 
     afterOpenModal() {
         this.subtitle.style.color = '#000';
     }
-    
-    soundCloseModal() {
-        console.log("sound Close!!");
-        this.setState({soundModalIsOpen: false, soundNoted: true});
-        axios.get('/turnOffAlarm').then(res => console.log(res))
-    }
-
     componentDidMount() {
         try {
             client.onopen = () => {
@@ -81,8 +72,9 @@ class Sound extends Component {
                     if (json.sensorIndex == this.state.selectedIndex) {
                         this.setState({
                             soundReading: json.data.currentSound,
+                            soundModalIsOpen: json.data.soundCritical
                         }) 
-                       }
+                    }
                        else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
                             const list = [...this.state.storeIndexes, json.sensorIndex];
                             this.setState({storeIndexes: list});
@@ -170,7 +162,7 @@ class Sound extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Sound Critical</h2>
                         <hr/>
                         <div>The Sound of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary" onClick={this.soundCloseModal} style={{float: 'right'}}>Turn off Alarm!</Button>
+                        <Button variant="contained" color="primary" style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
             </div>
