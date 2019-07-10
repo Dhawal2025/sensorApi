@@ -51,9 +51,9 @@ class Dashboard extends Component {
           <SplitPane split="vertical" defaultSize="70%" paneStyle={{background: "#282a36"}}>
           <div style={styles.center}>
           <div style={styles.centerRow}>
-            <h1 style={{color: 'white'}}>Humidity </h1>
-            <h1 style={{color: 'white'}}>Air Quality(in ppm) </h1>
-            <h1 style={{color: 'white'}}>Air Temp </h1>
+            <h1 style={{color: 'white'}}>Humidity(%) </h1>
+            <h1 style={{color: 'white'}}>Air Quality(PPM) </h1>
+            <h1 style={{color: 'white'}}>Air Temp(Celsius) </h1>
           </div>
           <div style={styles.centerRow}>
             <Humidity sensorType={constants.sensorType.AIR}  />
@@ -62,9 +62,6 @@ class Dashboard extends Component {
           </div>
           </div>
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-          Furnace Temperature Sensor
-          </h1>
             <Temperature sensorType={constants.sensorType.TEMPERATURE}  />
           </div>
           </SplitPane>
@@ -77,17 +74,11 @@ class Dashboard extends Component {
             <Pressure sensorType={constants.sensorType.PRESSURE} />
           </div>
           <div style={styles.center}>
-            <h1 style={{color: "white"}} >
-              Sound Sensor
-            </h1>
             <Sound sensorType={constants.sensorType.SOUND} />
           </div>
           </SplitPane>
           
           <div style={styles.center}>
-          <h1 style={{color: "white"}} >
-            Vibrations Sensor
-          </h1>
             <Vibrations sensorType={constants.sensorType.VIBRATION}  />
           </div>
           </SplitPane>

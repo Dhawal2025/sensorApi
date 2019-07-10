@@ -33,6 +33,21 @@ client.on('connect', function(connection) {
                 sensorType: constants.sensorType.TEMPERATURE,
                 sensorIndex: 1
             }));
+            connection.sendUTF(JSON.stringify({
+                currentPressure: 99000,
+                sensorType: constants.sensorType.PRESSURE,
+                sensorIndex: 2
+            }));
+            connection.sendUTF(JSON.stringify({
+                currentTemperature: 99,
+                sensorType: constants.sensorType.TEMPERATURE,
+                sensorIndex: 1
+            }));
+            connection.sendUTF(JSON.stringify({
+                currentHumidity: 99,
+                sensorType: constants.sensorType.AIR,
+                sensorIndex: 1
+            }));
             setTimeout(sendNumber, 1000);
         }
     }

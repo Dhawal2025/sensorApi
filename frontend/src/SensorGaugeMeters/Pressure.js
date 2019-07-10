@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const location = window.location.host;
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -41,7 +41,7 @@ class Pressure extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            pressureReading: 90000,
+            pressureReading: 0,
             pressureModalIsOpen: false,
             pressureNoted: false,
             differenceIncreased: false,
@@ -94,12 +94,13 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                                    
+                 
                    if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
-                        pressureReading: json.data.currentPressure,
+                        pressureReading: (json.data.currentPressure)/100000,
                         differenceIncreased: json.data.differenceIncreased
                     }) 
+                    if (json.data.currentPressure > 105000) this.setState({pressureModalIsOpen: true});
                    }
                    else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
                         const list = [...this.state.storeIndexes, json.sensorIndex];
@@ -127,7 +128,7 @@ class Pressure extends Component {
                     aria-label="More"
                     aria-controls="long-menu"
                     aria-haspopup="true"
-                    style={{marginLeft: "-40%"}}
+                    style={{marginLeft: "-65%"}}
                     onClick={this.handleClick}
                 >
                     <MoreVertIcon />
@@ -151,18 +152,18 @@ class Pressure extends Component {
                     </MenuItem>
                     ))}
                 </Menu>
-                <h1 style={{color: "white", marginLeft: "10%"}} >
-                    Pressure Sensor
+                <h1 style={{color: "white", marginLeft: "20%"}} >
+                    Pressure(Bar)
                 </h1>
                 <ReactSpeedometer
-                    maxValue={110000}
-                    minValue={90000}
+                    maxValue={2}
+                    minValue={0}
                     value={this.state.pressureReading}
                     needleColor="#aac4cf"
                     startColor="#7b88ff"
                     endColor="#49beb7"
                     segments={5}
-                    height={180}
+                    height={300}
                 />
                 <div>
                     <Modal

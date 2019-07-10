@@ -36,7 +36,6 @@ class AirTemperature extends Component {
             airTemperatureModalIsOpen: false,
             airTemperatureNoted: false
         };
-        console.log(props, "Air temperature")
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.airTemperatureCloseModal = this.airTemperatureCloseModal.bind(this);
     }
@@ -60,7 +59,6 @@ class AirTemperature extends Component {
             };
             client.onmessage = (message) => {
                const json = JSON.parse(message.data);
-                console.log(json, "TEMP JSON");
                 
                 if(json.sensorType == this.props.sensorType) {
                     console.log(window.location.href);

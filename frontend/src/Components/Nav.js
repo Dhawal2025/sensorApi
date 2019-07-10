@@ -38,7 +38,7 @@ class Nav extends React.Component {
 
     return (
       <div className="nav_root" style={{background: "black"}} >
-        <AppBar position="static" className="" style={{background: "#348498"}}>
+        <AppBar position="static" className="" style={{background: "#348498", height: "100%", display: "flex", flexDirection: "row", justifyContent: "column"}}>
           <Toolbar>
             {drawerButton}
             <Typography variant="title" >
