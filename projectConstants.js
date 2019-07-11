@@ -5,8 +5,13 @@ const sensorType = {
     SOUND: 4,
     AIR: 5
 }
+const alarmType = {
+    ALARM: 1,
+    EXHAUST: 2
+}
 module.exports = Object.freeze({
     sensorType: sensorType,
-    hostIP: "172.16.168.29:5000"
+    hostIP: "172.16.168.45:5000",
+    alarmType
 });
 

@@ -1,3 +1,8 @@
+const nodemailer = require('nodemailer');
+const Email = require('email-templates');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+
+var email = require('./helper');
 var pressureStore = require("./sensorsStore/pressure-sensor.js")
 var soundStore = require("./sensorsStore/sound-sensor.js")
 var temperatureStore = require("./sensorsStore/temperature-sensor.js")
@@ -13,11 +18,54 @@ var updateMessage = {
     data: {}
 }
 
+function sendMail(senderEmail, sensorName) {
+    console.log(senderEmail, sensorName);
+    const transport = nodemailer.createTransport(
+        nodemailerSendgrid({
+          apiKey: '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'
+        })
+      );
+      
+      // console.log(transporter, "TRANSPORTER");
+      const email = new Email({
+          message: {
+              from: 'skalra912@gmail.com'
+          },
+          send: true,
+          transport
+      });
+      console.log(email, "EMAIL");
+      email.send({
+        template: 'hello',
+        message: {
+          to: senderEmail,
+        },
+        locals: {
+          sensorName,
+          currentDateAndTime: '11/07/19'
+        }
+      }).then(() => console.log('email has been sent!'))
+      .catch((error) => console.log(error));
+}
+
+function getCurrentDateAndTime() {
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    return time + " " + date; 
+}
+
 function updatePressure(sensorIndex, currentPressure, currentPressureComparer) {
     pressureStore.setCurrentPressure(sensorIndex, currentPressure, currentPressureComparer)
     updateMessage.data = pressureStore.getCurrentPressure(sensorIndex);
     if(updateMessage.data == false)
         return false;
+    var curr = getCurrentDateAndTime();
+    console.log(curr);
+    if (updateMessage.data.pressureCritical) {
+        sendMail('skalra912@gmail.com', 'Pressure Sensor');
+        console.log("Critical temp");  
+    }
     updateMessage.sensorType = constants.sensorType.PRESSURE;
     updateMessage.sensorIndex = sensorIndex;
     return updateMessage;
