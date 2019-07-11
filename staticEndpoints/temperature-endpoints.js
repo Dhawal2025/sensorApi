@@ -1,8 +1,8 @@
 const temperatureStore = require('../sensorsStore/temperature-sensor.js')
-module.exports = function(app){
+module.exports = function(app, db){
     app.get('/setTemperatureThreshold', function(req, res) {
         temperatureStore.setTemperatureThreshold(req.query.sensorIndex, req.query.newThreshold)
-        console.log(temperatureStore.getTemperatureThreshold(req.query.sensorIndex))
+        console.logetAllTemperaturesg(temperatureStore.getTemperatureThreshold(req.query.sensorIndex))
         res.send(true);
     });
 
@@ -22,6 +22,12 @@ module.exports = function(app){
         console.log(req.query.temperatureThreshold)
         temperatureStore.setTemperatureLimits(1, req.query.temperatureUpperLimit, req.query.temperatureLowerLimit, req.query.temperatureThreshold)
         res.send(true)
+    })
+
+    app.get('/', function(req, res) {
+        console.log("kwejbfwuejbfwkefkjw")
+        console.log(req.query)
+        res.send("le be dhawal")
     })
 
 }
