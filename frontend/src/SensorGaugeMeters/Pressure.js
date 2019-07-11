@@ -9,9 +9,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import {hostIP} from "../../../projectConstants.js";
 
 const location = window.location.host;
-const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -48,7 +49,9 @@ class Pressure extends Component {
             selectedIndex: -1,
             anchorEl: null,
             setAnchorEl: null,
-            open: null
+            open: null,
+            pressureLowerLimit: 0,
+            pressureUpperLimit: 2
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
     }
@@ -85,12 +88,14 @@ class Pressure extends Component {
             client.onmessage = (message) => {
                 const json = JSON.parse(message.data);
                 if(json.sensorType == constants.sensorType.PRESSURE) {
-                 
+                    console.log(json.data.pressureUpperLimit, "PRESSURE");
                    if (json.sensorIndex == this.state.selectedIndex) {
                     this.setState({
-                        pressureReading: (json.data.currentPressure)/100000,
+                        pressureReading: (json.data.currentPressure),
                         differenceIncreased: json.data.differenceIncreased,
-                        pressureModalIsOpen: json.data.pressureCritical
+                        pressureModalIsOpen: json.data.pressureCritical,
+                        pressureUpperLimit: json.data.pressureUpperLimit,
+                        pressureLowerLimit: json.data.pressureLowerLimit
                     }) 
                 }
                    else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
@@ -147,8 +152,8 @@ class Pressure extends Component {
                     Pressure(Bar)
                 </h1>
                 <ReactSpeedometer
-                    maxValue={2}
-                    minValue={0}
+                    maxValue={this.state.pressureUpperLimit}
+                    minValue={this.state.pressureLowerLimit}
                     value={this.state.pressureReading}
                     needleColor="#aac4cf"
                     startColor="#7b88ff"
@@ -156,6 +161,7 @@ class Pressure extends Component {
                     segments={5}
                     height={300}
                 />
+                <Button onClick={() => this.setState({pressureUpperLimit: 5})}> Chal bc</Button>
                 <div>
                     <Modal
                     isOpen={this.state.pressureModalIsOpen}

@@ -6,8 +6,9 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import LiquidFillGauge from 'react-liquid-gauge';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import {hostIP} from "../../../projectConstants.js";
 const location = window.location.host;
-const client = new W3CWebSocket(`${window.location.protocol == 'http:' ? 'ws' : 'wss'}://${location}/echo?connectionType=client`);
+const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {

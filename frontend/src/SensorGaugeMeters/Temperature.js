@@ -4,13 +4,15 @@ import Modal from 'react-modal';
 import Thermometer from 'react-thermometer-component';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import constants from "../../../projectConstants.js";
+import {hostIP} from "../../../projectConstants.js";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 const location = window.location.host;
-const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
+console.log(hostIP);
+
+const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
 
 const customStyles = {
     overlay: {
@@ -28,7 +30,7 @@ const customStyles = {
         right: 'auto',
         bottom: 'auto',
         width: '25%',
-        height: '25%'
+        height: '15%'
     }
 };
 
@@ -47,7 +49,8 @@ class Temperature extends Component {
             selectedIndex: -1,
             anchorEl: null,
             setAnchorEl: null,
-            open: null
+            open: null,
+            temperatureThreshold: 300
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
     }
@@ -64,11 +67,11 @@ class Temperature extends Component {
         client.onmessage = (message) => {
            try {
             const json = JSON.parse(message.data);
-            console.log(json, "Furnance TEMP JSON");
+            
             
             if(json.sensorType == this.props.sensorType) {
                 console.log(window.location.href);
-                console.log(this.state.storeIndexes, "Indexes");
+                console.log(json, "Furnance");
                 
                 // console.log(json.data.currentTemperature);
                 // this.setState({
@@ -78,7 +81,8 @@ class Temperature extends Component {
                     this.setState({
                         tempReading: json.data.currentTemperature,
                         tempModalIsOpen: json.data.temperatureCritical,
-                        maxTemperature: json.data.temperatureUpperLimit
+                        maxTemperature: json.data.temperatureUpperLimit,
+                        temperatureThreshold: json.data.temperatureThreshold
                     }) 
                     if (json.data.currentTemperature > 200) {
                         this.setState({tempModalIsOpen: true});
@@ -147,6 +151,8 @@ class Temperature extends Component {
                 <h1 style={{color: "white"}}> 
                     Furnance<br/>(Celsius)
                 </h1>
+                <h2 style={{color: "white", marginLeft: "10%"}}> Limit: {this.state.temperatureThreshold} </h2>
+
                 <Thermometer
                     theme="dark"
                     value={this.state.tempReading}
@@ -155,8 +161,9 @@ class Temperature extends Component {
                     format="°C"
                     size="large"
                     height="250"
+                    width="500"
                     reverseGradient={false}
-                    style={{marginLeft: "90%"}}
+                    style={{marginLeft: "70%"}}
                 />
                 <div>
                     <Modal
@@ -168,7 +175,11 @@ class Temperature extends Component {
                     >
                         <h2 ref={subtitle => this.subtitle = subtitle}>Furnace Temperature Critical</h2>
                         <hr/>
-                        <div>The temperature of the Furnace has reached beyond critical limit.</div>
+                        <div>
+                            The temperature of the Furnace has reached beyond critical limit.
+                            <br />
+                            System Index: {this.state.selectedIndex}    
+                        </div>
                         <Button variant="contained" color="primary"  style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
