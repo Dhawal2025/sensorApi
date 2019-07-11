@@ -1,0 +1,4 @@
+if(currentAirTemperatures[sensorIndex - 1].currentMethane > airTemperatureThresholds[sensorIndex - 1].methaneThreshold)
+    currentAirTemperatures[sensorIndex - 1].criticalMethane = true;
+else
+    currentAirTemperatures[sensorIndex - 1].criticalMethane = false;

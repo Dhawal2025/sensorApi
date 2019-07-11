@@ -16,15 +16,12 @@ module.exports = function(app){
     })
 
     app.get('/Blink.ino.bin', function(req, res) {
-       
         var filePath = path.join(__dirname, '../Blink.ino.bin');
         var stat = fileSystem.statSync(filePath);
-    
         res.writeHead(200, {
             'Content-Type': 'application/octet-stream',
             'Content-Length': stat.size
         });
-    
         var readStream = fileSystem.createReadStream(filePath);
         // We replaced all the event handlers with a simple call to readStream.pipe()
         readStream.pipe(res);
