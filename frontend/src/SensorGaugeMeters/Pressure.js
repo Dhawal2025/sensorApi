@@ -9,7 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {hostIP} from "../../../projectConstants.js";
+import {hostIP, alarmType} from "../../../projectConstants.js";
 
 const location = window.location.host;
 const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
@@ -51,7 +51,8 @@ class Pressure extends Component {
             setAnchorEl: null,
             open: null,
             pressureLowerLimit: 0,
-            pressureUpperLimit: 2
+            pressureUpperLimit: 2,
+            pressureThreshold: 1.05
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
     }
@@ -95,7 +96,8 @@ class Pressure extends Component {
                         differenceIncreased: json.data.differenceIncreased,
                         pressureModalIsOpen: json.data.pressureCritical,
                         pressureUpperLimit: json.data.pressureUpperLimit,
-                        pressureLowerLimit: json.data.pressureLowerLimit
+                        pressureLowerLimit: json.data.pressureLowerLimit,
+                        pressureThreshold: json.data.pressureThreshold
                     }) 
                 }
                    else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
@@ -114,6 +116,10 @@ class Pressure extends Component {
         } catch(error) {
             console.log(error);
         }
+    }
+
+    handlePressureCloseModal = () => {
+        client.send(JSON.stringify({ trigger: alarmType.ALARM, sensorType: this.props.sensorType, selectedIndex: this.state.selectedIndex}));
     }
 
     render() {
@@ -151,6 +157,7 @@ class Pressure extends Component {
                 <h1 style={{color: "white", marginLeft: "20%"}} >
                     Pressure(Bar)
                 </h1>
+                <h2 style={{color: "white", marginLeft: "30%"}}> Limit: {this.state.pressureThreshold} </h2>
                 <ReactSpeedometer
                     maxValue={this.state.pressureUpperLimit}
                     minValue={this.state.pressureLowerLimit}
@@ -172,7 +179,7 @@ class Pressure extends Component {
                         <h2 ref={subtitle => this.subtitle = subtitle}>Pressure Critical</h2>
                         <hr/>
                         <div>The pressure of the region has reached beyond critical limit.</div>
-                        <Button variant="contained" color="primary"  style={{float: 'right'}}>Turn off Alarm!</Button>
+                        <Button variant="contained" color="primary" onClick={this.handlePressureCloseModal}  style={{float: 'right'}}>Turn off Alarm!</Button>
                     </Modal>
                 </div>
                 <div>

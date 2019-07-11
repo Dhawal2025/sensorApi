@@ -1,0 +1,40 @@
+doctype transitional
+html(xmlns='http://www.w3.org/1999/xhtml')
+ head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  title Critical
+  meta(name='description' content='')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(rel='stylesheet' href='')
+  style.
+    table{
+    border: 1px solid black;
+    width: 60%;
+    table-layout: fixed ;
+    }
+    td, th {
+    border: 1px solid black;
+    width: 20%;
+    }
+//if lt IE 7
+  p.browsehappy
+    | You are using an 
+    strong outdated
+    |  browser. Please 
+    a(href='#') upgrade your browser
+    |  to improve your experience.
+center
+  img(src='https://media.licdn.com/dms/image/C560BAQGH7LWOT4Cv9g/company-logo_200_200/0?e=2159024400&v=beta&t=fCT9r17igMXDQBcWS3xBoYlowxFRHx0sArTZJwN5JuQ')
+  h1 Alert!!
+  h2 #{sensorName} has detected a serious criticality.
+  table
+    tr
+      th Date and Time
+      th Threshold
+      th Current Reading
+    tr(align='center')
+      td #{currentDateAndTime}
+      td 1.05 bar
+      td 1.10 bar
+script(src='' async='' defer='')
