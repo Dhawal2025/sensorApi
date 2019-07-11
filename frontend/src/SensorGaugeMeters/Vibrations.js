@@ -12,8 +12,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-const location = window.location.host;
-const client = new W3CWebSocket(`ws://172.16.168.29:5000/echo?connectionType=client`);
+import {hostIP} from "../../../projectConstants.js";
+const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
 
 const DATA = [
 //   {x0: ONE_DAY * 2, x: ONE_DAY * 3, y: 1},

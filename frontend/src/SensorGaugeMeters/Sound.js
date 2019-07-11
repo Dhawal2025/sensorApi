@@ -9,9 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {hostIP} from "../../../projectConstants.js";
-
-const location = window.location.host;
 const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
+
 const customStyles = {
     overlay: {
         position: 'fixed',
