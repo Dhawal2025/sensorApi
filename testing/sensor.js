@@ -18,8 +18,8 @@ client.on('connect', function(connection) {
         console.log('echo-protocol Connection Closed');
     });
     connection.on('message', function(message) {
+        console.log(JSON.parse(message.utf8Data));
         if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data.value + "'");
         }
     });
     var number = 0
@@ -27,31 +27,73 @@ client.on('connect', function(connection) {
         number++;
         console.log(number)
         if (connection.connected) {
-            var number = 5 + Math.round(Math.random() * 10);
+            /*if(number <= 36) {
+                connection.sendUTF(JSON.stringify({
+                    currentX: number,
+                    hundredReceived: false,
+                    sensorType: constants.sensorType.VIBRATION,
+                    sensorIndex: 1
+                }));
+            } else {
+                connection.sendUTF(JSON.stringify({
+                    hundredReceived: true,
+                    sensorType: constants.sensorType.VIBRATION,
+                    sensorIndex: 1
+                }));
+                number = 0;
+            }
+/*
             connection.sendUTF(JSON.stringify({
-                currentTemperature: 200,
+                currentAirTemperature: 25,
+                currentCO2: 10,
+                currentLPG: 10,
+                currentMethane: 10,
+                currentSmoke: 15,
+                currentHumidity: 15,
+                sensorType: constants.sensorType.AIR,
+                sensorIndex: 1
+            }));*/
+            /*
+            connection.sendUTF(JSON.stringify({
+                currentTemperature: NaN,
                 sensorType: constants.sensorType.TEMPERATURE,
                 sensorIndex: 1
-            }));
+            }));*/
             connection.sendUTF(JSON.stringify({
-                currentPressure: 99000,
+                currentPressure: 500000,
+                currentPressureComparer: 100000,
+                sensorType: constants.sensorType.PRESSURE,
+                sensorIndex: 1
+            }));
+            /*connection.sendUTF(JSON.stringify({
+                currentSound: 900,
+                sensorType: constants.sensorType.SOUND,
+                sensorIndex: 1
+            }));
+            /*
+            connection.sendUTF(JSON.stringify({
+                currentPressure: 80000,
+                currentPressureComparer: 150000,
                 sensorType: constants.sensorType.PRESSURE,
                 sensorIndex: 2
             }));
+*//*
             connection.sendUTF(JSON.stringify({
                 currentTemperature: 99,
                 sensorType: constants.sensorType.TEMPERATURE,
                 sensorIndex: 1
             }));
+            
             connection.sendUTF(JSON.stringify({
                 currentHumidity: 99,
                 sensorType: constants.sensorType.AIR,
                 sensorIndex: 1
-            }));
+            }));*/
+
             setTimeout(sendNumber, 1000);
         }
     }
     sendNumber();
 });
  
-client.connect('ws://sensorapiturings.herokuapp.com/echo?connectionType=sensor');
+client.connect('ws://localhost:5000?connectionType=sensor');

@@ -23,4 +23,5 @@ module.exports = function(app){
         temperatureStore.setTemperatureLimits(1, req.query.temperatureUpperLimit, req.query.temperatureLowerLimit, req.query.temperatureThreshold)
         res.send(true)
     })
+
 }

@@ -12,5 +12,8 @@ const alarmType = {
 }
 module.exports = Object.freeze({
     sensorType: sensorType,
-    alarmType: alarmType
+    alarmType: alarmType,
+    ALARM_IP: 'ws://172.16.166.152/',
+    EXHAUST_IP: 'ws://192.168.43.131/',
+    MCB_BOARD_IP: 'ws://192.168.43.131/'
 });
