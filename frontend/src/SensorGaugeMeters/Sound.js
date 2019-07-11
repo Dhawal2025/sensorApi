@@ -8,9 +8,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-const location = window.location.host;
-const client = new W3CWebSocket(`ws://localhost:5000/echo?connectionType=client`);
+import {hostIP} from "../../../projectConstants.js";
 
+const location = window.location.host;
+const client = new W3CWebSocket(`ws://${hostIP}/echo?connectionType=client`);
 const customStyles = {
     overlay: {
         position: 'fixed',
@@ -27,7 +28,7 @@ const customStyles = {
         right: 'auto',
         bottom: 'auto',
         width: '25%',
-        height: '25%'
+        height: '15%'
     }
 };
 
@@ -44,7 +45,8 @@ class Sound extends Component {
             selectedIndex: -1,
             anchorEl: null,
             setAnchorEl: null,
-            open: null
+            open: null,
+            soundThreshold: 2500
         };
         this.afterOpenModal = this.afterOpenModal.bind(this);
     }
@@ -72,7 +74,8 @@ class Sound extends Component {
                     if (json.sensorIndex == this.state.selectedIndex) {
                         this.setState({
                             soundReading: json.data.currentSound,
-                            soundModalIsOpen: json.data.soundCritical
+                            soundModalIsOpen: json.data.soundCritical,
+                            soundThreshold: json.data.soundThreshold
                         }) 
                     }
                        else if (json.sensorIndex > this.state.storeIndexes.slice(-1) || this.state.storeIndexes.length == 0 ) {
@@ -139,6 +142,7 @@ class Sound extends Component {
                 <h1 style={{color: "white", marginLeft: "20%"}} >
                     Sound(Analog)
                 </h1>
+                <h2 style={{color: "white", marginLeft: "30%"}}> Limit: {this.state.soundThreshold} </h2>
                 <ReactSpeedometer
                     maxValue={2500}
                     value={this.state.soundReading}

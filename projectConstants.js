@@ -7,4 +7,6 @@ const sensorType = {
 }
 module.exports = Object.freeze({
     sensorType: sensorType,
+    hostIP: "172.16.168.29:5000"
 });
+
