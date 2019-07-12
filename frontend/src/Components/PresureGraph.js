@@ -16,21 +16,10 @@ class PressureGraph extends Component {
     }
 
     componentDidMount() {
-        const min = 4;
-        const max = 6;
-        /*setInterval( () => Axios.get('/getCurrentVibrations').then(res =>{
-            this.setState({ 
-                x: res.data.currentX,
-                y: res.data.currentY,
-                z: res.data.currentZ
-            })
-        }), 2000)*/
-        client.onopen = () => console.log("Pressure Graph Connected");
-        client.onmessage = (message) => {
-            const json = JSON.parse(message.data);
-            if (json.sensorType = sensorType.PRESSURE) this.setState({temp: json.data.currentPressure});
-            console.log(this.state.pressure);
-        }
+        setInterval(() => Axios.get('/getAllPressures').then((res)=> {
+            console.log(res.data, "PRESSURE");
+            res.data.map(data=> this.setState({pressure: data.pressure}));
+        }), 6000);
         // setInterval(() => this.setState({ temp: Math.floor(Math.random()*(max-min+1)+min)}),0)
     }
     render() {
