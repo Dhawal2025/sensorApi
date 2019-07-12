@@ -29,7 +29,8 @@ class Settings extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://${hostIP}/getTemperatureLimits`, {crossDomain: true}).then(res => {
+        axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+        axios.get(`/getTemperatureLimits`, {crossDomain: true}).then(res => {
             console.log(res)
             this.setState({
                 temperatureUpperLimit: res.data.upperLimit,
@@ -73,7 +74,7 @@ class Settings extends Component {
 
     submitTemperatureChanges = () => {
         console.log("******************************")
-        axios.get(`http://${hostIP}/setTemperatureLimits`, {
+        axios.get(`/setTemperatureLimits`, {
             params: {
                 temperatureUpperLimit: this.state.temperatureUpperLimit,
                 temperatureLowerLimit: this.state.temperatureLowerLimit,

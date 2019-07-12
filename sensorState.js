@@ -9,6 +9,7 @@ var temperatureStore = require("./sensorsStore/temperature-sensor.js")
 var airStore = require("./sensorsStore/air-sensor.js")
 var vibrationStore = require("./sensorsStore/vibration-sensor.js")
 const constants = require('./projectConstants.js')
+const index = require('./index.js')
 
 var fft = require('fft-js').fft
 
@@ -68,6 +69,7 @@ function updatePressure(sensorIndex, currentPressure, currentPressureComparer) {
     }
     updateMessage.sensorType = constants.sensorType.PRESSURE;
     updateMessage.sensorIndex = sensorIndex;
+
     return updateMessage;
 }
 
@@ -88,6 +90,7 @@ function updateTemperature(sensorIndex, currentTemperature) {
         return false;
     updateMessage.sensorType = constants.sensorType.TEMPERATURE;
     updateMessage.sensorIndex = sensorIndex;
+    //temperatureDatabase.storeTemperature(index.db, updateMessage)
     return updateMessage;
 }
 

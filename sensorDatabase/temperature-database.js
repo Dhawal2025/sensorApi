@@ -1,12 +1,11 @@
 const assert = require('assert');
-
-var storeTemperature = async function(db, temperature, humidity, ppm) {
+var storeTemperature = async function(db, updateMessage) {
     const temperatureCollection = db.collection('temperature');
     // Insert some documents
+    var today = new Date();
     temperatureCollection.insertOne({
-            temperature : temperature,
-            humidity: humidity,
-            ppm: ppm
+            date: today,
+            temperature : updateMessage.data.currentTemperature
         }, function(err, result) {
         assert.equal(err, null);
         console.log("Inserted document into the collection");
@@ -20,6 +19,7 @@ var findTemperature = (db) => {
         const temperatureCollection = db.collection('temperature');    
         temperatureCollection.find({}).toArray(function(err, docs) {
             assert.equal(err, null);
+            console.log(docs)
             resolve(docs)
         });
     });

@@ -3,14 +3,26 @@ const webSocketsServerPort = 5000;
 const webSocketServer = require('websocket').server;
 const http = require('http');
 
+var db
+const PORT=5000	
+const MongoClient = require('mongodb').MongoClient;
 const express = require('express')
 const app = express();
 
-require('./staticEndpoints/pressure-endpoints.js')(app);
-require('./staticEndpoints/temperature-endpoints.js')(app);
-require('./staticEndpoints/sound-endpoints.js')(app);
+require('./staticEndpoints/pressure-endpoints.js')(app, db);
+require('./staticEndpoints/temperature-endpoints.js')(app, db);
+require('./staticEndpoints/sound-endpoints.js')(app, db);
+
+
+const temperatureDatabase = require("./sensorDatabase/temperature-database")
+const pressureDatabase = require("./sensorDatabase/pressure-database")
+const soundDatabase = require("./sensorDatabase/temperature-database")
+
 const alarmSender = require('./responses/runAlarm.js')
 const path = require('path');
+
+var uri = 'mongodb://localhost:27017/sensorDatabase';
+const dbName = 'sensorApi';
 
 const server = http.createServer(app);
 var pressureAlarmExplicitlyOff = false
@@ -83,7 +95,7 @@ wsServer.on('request', function(request) {
         clients[userId] = connection;
         clients[userId].on('message', function(message) {
             const dataFromClient = JSON.parse(message.utf8Data);
-            console.log(dataFromClient.trigger)
+            console.log("++++++++++++++++++++" + dataFromClient.trigger)
             if(dataFromClient.trigger == constants.alarmType.ALARM) {
                 pressureAlarmExplicitlyOff = true;
                 alarmSender.sendAlarm({sensorType: dataFromClient.sensorType}, 0, constants.alarmType.ALARM)
@@ -112,6 +124,7 @@ wsServer.on('request', function(request) {
                                     }
                                 } else {
                                     pressureAlarmExplicitlyOff = false;
+                                    alarmSender.sendAlarm(updateMessage, 0, constants.alarmType.ALARM)
                                 }      
                             }
                         } catch(err) {
@@ -129,6 +142,7 @@ wsServer.on('request', function(request) {
                     case constants.sensorType.TEMPERATURE:
                         try{
                             updateMessage = sensorState.updateTemperature(dataFromClient.sensorIndex, dataFromClient.currentTemperature)
+                            temperatureDatabase.storeTemperature(db, updateMessage)
                         } catch(err) {
                             errorPrint()
                         }
@@ -173,14 +187,33 @@ wsServer.on('request', function(request) {
     });
 });
 
+app.get('/getAllTemperatures', async function(req, res) {
+    var response = await temperatureDatabase.findTemperature(db);
+    console.log("sdfnsdkfnskjdfnkjsdfnkjsdfnksdjf")
+    res.send(response);
+})
+
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, 'frontend/build')))
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/frontend/build/index.html'))
 })
 
 server.listen(process.env.PORT || 5000, () => {
+
     console.log(`Server started on port ${server.address().port} :)`);
+    MongoClient.connect(uri, { useNewUrlParser: true }, function(err, client) {
+
+        if(err) {
+            console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+        }
+       console.log("Connected successfully to database server");  
+       db = client.db(dbName);
+   });
 });

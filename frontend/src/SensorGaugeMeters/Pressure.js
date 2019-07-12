@@ -30,7 +30,7 @@ const customStyles = {
         right: 'auto',
         bottom: 'auto',
         width: '25%',
-        height: '25%'
+        height: '15%'
     },
     
 };
@@ -168,7 +168,6 @@ class Pressure extends Component {
                     segments={5}
                     height={300}
                 />
-                <Button onClick={() => this.setState({pressureUpperLimit: 5})}> Chal bc</Button>
                 <div>
                     <Modal
                     isOpen={this.state.pressureModalIsOpen}
