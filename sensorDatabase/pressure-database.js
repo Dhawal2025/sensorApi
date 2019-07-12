@@ -1,10 +1,12 @@
 const assert = require('assert');
 
-var storePressure = async function(db, pressure) {
+var storePressure = async function(db, updateMessage) {
     const pressureCollection = db.collection('pressure');
     // Insert some documents
+    var today = new Date();
     pressureCollection.insertOne({
-            pressure : pressure
+            date: today,
+            pressure : updateMessage.data.currentPressure
         }, function(err, result) {
         assert.equal(err, null);
         console.log("Inserted document into the collection");
