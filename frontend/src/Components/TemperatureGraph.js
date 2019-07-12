@@ -25,13 +25,16 @@ class TemperatureGraph extends Component {
                 z: res.data.currentZ
             })
         }), 2000)*/
-        client.onopen = () => console.log("Temperature Graph Connected");
-        client.onmessage = (message) => {
-            const json = JSON.parse(message.data);
-            if (json.sensorType = sensorType.TEMPERATURE) this.setState({temp: json.data.currentTemperature});
-            console.log(this.state.temp);
-        }
+        // client.onopen = () => console.log("Temperature Graph Connected");
+        // client.onmessage = (message) => {
+        //     const json = JSON.parse(message.data);
+        //     if (json.sensorType = sensorType.TEMPERATURE) this.setState({temp: json.data.currentTemperature});
+        //     console.log(this.state.temp);
+        // }
         // setInterval(() => this.setState({ temp: Math.floor(Math.random()*(max-min+1)+min)}),0)
+        setInterval(() => Axios.get('/getAllTemperatures').then((res)=> {
+            res.data.map(data=> this.setState({temp: data.temperature}));
+        }), 6000);
     }
     render() {
          console.log(this.state.x, this.state.y, this.state.z);
@@ -48,7 +51,7 @@ class TemperatureGraph extends Component {
                 right: 50
             },
             axis: {
-                y: { min: 0, max: 500 }
+                y: { min: 0, max: 100 }
             },
             point: {
                 show: false
@@ -59,7 +62,7 @@ class TemperatureGraph extends Component {
                 <RTChart
             chart = {chart}
             fields={['temperature' ]}
-            maxValues={20}
+            maxValues={30}
             data={data} />
             </div>
         );
