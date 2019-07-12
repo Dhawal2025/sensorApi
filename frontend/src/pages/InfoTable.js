@@ -127,8 +127,8 @@ render () {
                     {row.sensorType}
                   </TableCell>
                   <TableCell align="right">{row.sensorIndex}</TableCell>
-                  <TableCell align="right">{row.data.currentTemperature}</TableCell>
-                  <TableCell align="right">{row.data.temperatureThreshold}</TableCell>
+                  <TableCell align="right">{row.data.currentPressure}</TableCell>
+                  <TableCell align="right">{row.data.pressureThreshold}</TableCell>
                   {/* <TableCell align="right">{row.protein}</TableCell> */}
                 </TableRow>
               )) : null}
