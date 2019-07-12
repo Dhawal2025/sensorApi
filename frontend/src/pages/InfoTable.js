@@ -43,7 +43,8 @@ constructor(props) {
     this.pressureList = []
     this.state = {
         color: "white",
-        sensorCritical: []
+        tempSensorCritical: [],
+        pressureSensorCritical: []
     };
 }
 componentDidMount() {
@@ -52,23 +53,34 @@ componentDidMount() {
     }
     client.onmessage = (message) => {
         const json = JSON.parse(message.data);
-        if (json.data.temperatureCritical) {
-          if (this.tempList.length < 2) {
-            if (this.tempList.length == 0) this.tempList.push(json);
-            else if (this.tempList[0].sensorIndex != json.sensorIndex) this.tempList.push(json);
+        if (json.sensorType == sensorType.TEMPERATURE) {
+          if (json.data.temperatureCritical) {
+            if (this.tempList.length < 2) {
+              if (this.tempList.length == 0) this.tempList.push(json);
+              else if (this.tempList[0].sensorIndex != json.sensorIndex) this.tempList.push(json);
+            }
           }
         }
 
-        console.log(this.tempList, "TEMP LIST");
         if (this.tempList.length >= 1) {
-          if (json.sensorIndex == 1 && !json.data.temperatureCritical) this.tempList.splice(0, 1)
+          if (json.sensorType == sensorType.TEMPERATURE && json.sensorIndex == 1 && !json.data.temperatureCritical) this.tempList.splice(0, 1)
         }
         if (this.tempList.length == 2) {
-          if (json.sensorIndex == 2 && !json.data.temperatureCritical) this.tempList.splice(1, 1);
+          if (json.sensorType == sensorType.TEMPERATURE && json.sensorIndex == 2 && !json.data.temperatureCritical) this.tempList.splice(1, 1);
 
         }
-        this.setState({sensorCritical: this.tempList});
-        console.log(this.state.sensorCritical, "STATE");
+        if (json.sensorType == sensorType.PRESSURE) {
+          this.pressureList = [];
+          if (json.data.pressureCritical) {
+            this.pressureList.push(json);
+          }
+        }
+        console.log(this.tempList, "temp list");
+        console.log(this.pressureList, "pressure list");
+        this.setState({tempSensorCritical: this.tempList});
+        this.setState({pressureSensorCritical: this.pressureList})
+        console.log(this.state.tempSensorCritical, " temp STATE");
+        console.log(this.state.pressureSensorCritical, "pressure STATE");
 
     }
     // this.setState({sensorCritical: {sensorType: 1, sensorIndex: 2}})
@@ -98,7 +110,18 @@ render () {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.sensorCritical.map(row => (
+              {this.state.tempSensorCritical.length > 0 ? this.state.tempSensorCritical.map(row => (
+                <TableRow key={row.sensorIndex} style = {{background: this.state.color}}>
+                  <TableCell component="th" scope="row">
+                    {row.sensorType == 2 ? 'Temperature' : 'Pressure'}
+                  </TableCell>
+                  <TableCell align="right">{row.sensorIndex}</TableCell>
+                  <TableCell align="right">{row.data.currentTemperature}</TableCell>
+                  <TableCell align="right">{row.data.temperatureThreshold}</TableCell>
+                  {/* <TableCell align="right">{row.protein}</TableCell> */}
+                </TableRow>
+              )) : null}
+              {this.state.pressureSensorCritical.length > 0 ? this.state.pressureSensorCritical.map(row => (
                 <TableRow key={row.sensorIndex} style = {{background: this.state.color}}>
                   <TableCell component="th" scope="row">
                     {row.sensorType}
@@ -108,7 +131,7 @@ render () {
                   <TableCell align="right">{row.data.temperatureThreshold}</TableCell>
                   {/* <TableCell align="right">{row.protein}</TableCell> */}
                 </TableRow>
-              ))}
+              )) : null}
             </TableBody>
           </Table>
         </Paper>

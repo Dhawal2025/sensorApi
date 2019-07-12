@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "client-build": "cd frontend && npm i && npm run build && cd ..",
-    "local-deploy": "cd frontend && npm run build && cd .. && nodemon index.js",
+    "local-deploy": "cd frontend && npm run build && cd .. && node index.js",
     "dev": "npm run client-build && nodemon index.js",
     "heroku-postbuild": "cd frontend && npm i && npm run build"
   },

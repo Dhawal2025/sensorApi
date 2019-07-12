@@ -17,7 +17,6 @@ class PressureGraph extends Component {
 
     componentDidMount() {
         setInterval(() => Axios.get('/getAllPressures').then((res)=> {
-            console.log(res.data, "PRESSURE");
             res.data.map(data=> this.setState({pressure: data.pressure}));
         }), 6000);
         // setInterval(() => this.setState({ temp: Math.floor(Math.random()*(max-min+1)+min)}),0)
