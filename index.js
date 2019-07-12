@@ -19,6 +19,8 @@ const pressureDatabase = require("./sensorDatabase/pressure-database")
 const soundDatabase = require("./sensorDatabase/temperature-database")
 
 const alarmSender = require('./responses/runAlarm.js')
+
+const exhaustSender = require('./responses/runExhaust.js')
 const path = require('path');
 
 var uri = 'mongodb://localhost:27017/sensorDatabase';
@@ -101,7 +103,7 @@ wsServer.on('request', function(request) {
                 alarmSender.sendAlarm({sensorType: dataFromClient.sensorType}, 0, constants.alarmType.ALARM)
             } else if(dataFromClient.trigger == constants.alarmType.EXHAUST) {
                 airExhaustExplicitlyOff = true;
-                alarmSender.sendAlarm({sensorType: dataFromClient.sensorType}, 0, constants.alarmType.EXHAUST)
+                exhaustSender.sendAlarm({sensorType: dataFromClient.sensorType}, 0, constants.alarmType.EXHAUST)
             }
         })
     } else {
@@ -142,6 +144,7 @@ wsServer.on('request', function(request) {
                     case constants.sensorType.TEMPERATURE:
                         try{
                             updateMessage = sensorState.updateTemperature(dataFromClient.sensorIndex, dataFromClient.currentTemperature)
+                            
                             temperatureDatabase.storeTemperature(db, updateMessage)
                         } catch(err) {
                             errorPrint()
@@ -150,6 +153,19 @@ wsServer.on('request', function(request) {
                     case constants.sensorType.AIR:
                         try{    
                             updateMessage = sensorState.updateAirTemperature(dataFromClient.sensorIndex, dataFromClient.currentAirTemperature, dataFromClient.currentHumidity, dataFromClient.currentLPG, dataFromClient.currentMethane, dataFromClient.currentCO2, dataFromClient.currentSmoke)
+                            if(updateMessage) {
+                                console.log(updateMessage.data.smokeCritical)
+                                if(updateMessage.data.smokeCritical) {
+                                    console.log("critical")
+                                    if(!airExhaustExplicitlyOff) {
+                                        console.log("sdfsdfsdf")
+                                        exhaustSender.sendAlarm(updateMessage, 1, constants.alarmType.EXHAUST)
+                                    }
+                                } else {
+                                    airExhaustExplicitlyOff = false;
+                                    exhaustSender.sendAlarm(updateMessage, 0, constants.alarmType.EXHAUST)
+                                }      
+                            }
                         } catch(err) {
                             errorPrint()
                         }
@@ -189,7 +205,6 @@ wsServer.on('request', function(request) {
 
 app.get('/getAllTemperatures', async function(req, res) {
     var response = await temperatureDatabase.findTemperature(db);
-    console.log("sdfnsdkfnskjdfnkjsdfnkjsdfnksdjf")
     res.send(response);
 })
 

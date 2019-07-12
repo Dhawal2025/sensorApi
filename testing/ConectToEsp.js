@@ -23,9 +23,9 @@ client.on('connect', function(connection) {
     connection.sendUTF(JSON.stringify({
         device: 2,
         sensor: "Vibration",
-        status: 0
+        status: 1
     }));
     connection.close();
 });
  
-client.connect('ws://192.168.43.131/');
+client.connect('ws://172.16.168.61/');

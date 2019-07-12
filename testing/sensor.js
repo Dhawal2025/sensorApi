@@ -102,4 +102,4 @@ client.on('connect', function(connection) {
     sendNumber();
 });
  
-client.connect('ws://localhost:5000?connectionType=sensor');
+client.connect('ws://172.16.166.234:5000?connectionType=sensor');
