@@ -24,7 +24,7 @@ module.exports = function(app, db){
         res.send(true)
     })
 
-    app.get('/', function(req, res) {
+    app.get('/simpleSensor', function(req, res) {
         console.log("kwejbfwuejbfwkefkjw")
         console.log(req.query)
         res.send("le be dhawal")
