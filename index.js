@@ -115,7 +115,8 @@ wsServer.on('request', function(request) {
                 switch(dataFromClient.sensorType) {
                     case constants.sensorType.PRESSURE:
                         try {
-                            updateMessage = sensorState.updatePressure(dataFromClient.sensorIndex, dataFromClient.currentPressure, dataFromClient.currentPressureComparer)
+                            updateMessage = sensorState.updatePressure(dataFromClient.sensorIndex, dataFromClient.currentPressure, dataFromClient.currentPressureComparer)  
+                            pressureDatabase.storePressure(db, updateMessage)
                             if(updateMessage) {
                                 console.log(updateMessage.data.pressureCritical)
                                 if(updateMessage.data.pressureCritical) {
@@ -205,6 +206,11 @@ wsServer.on('request', function(request) {
 
 app.get('/getAllTemperatures', async function(req, res) {
     var response = await temperatureDatabase.findTemperature(db);
+    res.send(response);
+})
+
+app.get('/getAllPressures', async function(req, res) {
+    var response = await pressureDatabase.findPressure(db);
     res.send(response);
 })
 

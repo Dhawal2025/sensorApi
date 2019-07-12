@@ -20,7 +20,6 @@ var updateMessage = {
 }
 
 function sendMail(senderEmail, sensorName) {
-    console.log(senderEmail, sensorName);
     const transport = nodemailer.createTransport(
         nodemailerSendgrid({
           apiKey: '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'
@@ -35,7 +34,6 @@ function sendMail(senderEmail, sensorName) {
           send: true,
           transport
       });
-      console.log(email, "EMAIL");
       email.send({
         template: 'hello',
         message: {
